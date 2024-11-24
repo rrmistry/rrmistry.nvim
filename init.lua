@@ -34,6 +34,18 @@ vim.opt.timeoutlen = 300 -- Time to wait for mapped sequence
 vim.opt.splitright = true -- Force splits to open on the right
 vim.opt.splitbelow = true -- Force splits to open below
 
+-- Whitespace rendering settings
+vim.opt.list = true -- Enable list mode for whitespace rendering
+vim.opt.listchars = {
+    space = '·',
+    tab = '→ ',    -- Tab character
+    trail = '·',   -- Trailing spaces
+    extends = '⟩',  -- Character shown when line continues right
+    precedes = '⟨', -- Character shown when line continues left
+    nbsp = '␣',    -- Non-breaking space
+    eol = '↴',     -- End of line character
+}
+
 -- Initialize lazy.nvim
 require("lazy").setup({
   -- Color scheme

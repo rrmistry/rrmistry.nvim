@@ -34,6 +34,22 @@ vim.opt.timeoutlen = 300 -- Time to wait for mapped sequence
 vim.opt.splitright = true -- Force splits to open on the right
 vim.opt.splitbelow = true -- Force splits to open below
 
+-- Move between windows easily
+vim.keymap.set('n', '<C-h>', '<C-w>h') -- Move to left window
+vim.keymap.set('n', '<C-j>', '<C-w>j') -- Move to bottom window
+vim.keymap.set('n', '<C-k>', '<C-w>k') -- Move to top window
+vim.keymap.set('n', '<C-l>', '<C-w>l') -- Move to right window
+
+-- Resize windows
+vim.keymap.set('n', '<C-Left>', ':vertical resize -2<CR>')
+vim.keymap.set('n', '<C-Right>', ':vertical resize +2<CR>')
+vim.keymap.set('n', '<C-Up>', ':resize -2<CR>')
+vim.keymap.set('n', '<C-Down>', ':resize +2<CR>')
+
+-- Split creation (similar to VS Code)
+vim.keymap.set('n', '<leader>v', ':vsplit<CR>') -- Vertical split
+vim.keymap.set('n', '<leader>h', ':split<CR>')  -- Horizontal split
+
 -- Whitespace rendering settings
 vim.opt.list = true -- Enable list mode for whitespace rendering
 vim.opt.listchars = {
@@ -151,10 +167,10 @@ require("lazy").setup({
     },
     config = function()
       local builtin = require('telescope.builtin')
-      vim.keymap.set('n', '<leader>ff', builtin.find_files)
-      vim.keymap.set('n', '<leader>fg', builtin.live_grep)
-      vim.keymap.set('n', '<leader>fb', builtin.buffers)
-      vim.keymap.set('n', '<leader>fh', builtin.help_tags)
+      vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Find Files' })
+      vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Live Grep' })
+      vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Find Buffers' })
+      vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Find Help' })
     end
   },
 
@@ -234,6 +250,73 @@ require("lazy").setup({
     end,
   },
 
+  -- Neogit: Magit-like Git interface
+  {
+    'NeogitOrg/neogit',
+    dependencies = {
+      'nvim-lua/plenary.nvim',         -- Lua utility functions
+      'sindrets/diffview.nvim',         -- Diff view integration
+      'nvim-telescope/telescope.nvim',  -- Optional: for enhanced UI
+    },
+    config = function()
+      local neogit = require('neogit')
+      
+      neogit.setup {
+        -- Customize Neogit settings
+        disable_signs = false,
+        kind = "tab",  -- Open in a new tab
+        signs = {
+          -- Customize git signs
+          section = { "▸", "▾" },
+          item = { "▸", "▾" },
+        },
+        -- Integrations
+        integrations = {
+          diffview = true
+        }
+      }
+
+      -- Key mappings
+      vim.keymap.set('n', '<leader>gg', neogit.open, { desc = 'Open Neogit' })
+      vim.keymap.set('n', '<leader>gc', function() 
+        neogit.open({ "commit" }) 
+      end, { desc = 'Open Neogit Commit' })
+    end
+  },
+
+  -- Diffview: Enhanced diff view
+  {
+    'sindrets/diffview.nvim',
+    dependencies = 'nvim-lua/plenary.nvim',
+    config = function()
+      local diffview = require('diffview')
+      
+      diffview.setup {
+        view = {
+          -- Customize diff view layout
+          default = {
+            layout = "diff2_horizontal",
+          },
+          merge_tool = {
+            layout = "diff3_horizontal",
+          }
+        },
+        file_panel = {
+          listing_style = "tree",  -- Tree-view of changed files
+          win_config = {
+            position = "left",
+            width = 35
+          }
+        }
+      }
+
+      -- Key mappings for Diffview
+      vim.keymap.set('n', '<leader>dv', ':DiffviewOpen<CR>', { desc = 'Open Diffview' })
+      vim.keymap.set('n', '<leader>dc', ':DiffviewClose<CR>', { desc = 'Close Diffview' })
+      vim.keymap.set('n', '<leader>dh', ':DiffviewFileHistory<CR>', { desc = 'File History' })
+    end
+  },
+
   -- Terminal integration
   {
     'akinsho/toggleterm.nvim',
@@ -282,6 +365,15 @@ require("lazy").setup({
         },
       })
     end,
+  },
+
+  -- window management
+  {
+    'christoomey/vim-tmux-navigator',
+    config = function()
+      -- Enable navigation between tmux and vim
+      vim.g.tmux_navigator_save_on_switch = 2
+    end
   },
 })
 

@@ -16,7 +16,7 @@ vim.opt.rtp:prepend(lazypath)
 -- Basic Vim options
 vim.g.mapleader = " " -- Set leader key to space
 vim.opt.number = true -- Show line numbers
-vim.opt.relativenumber = true -- Show relative line numbers
+vim.opt.relativenumber = false -- Show relative line numbers
 vim.opt.mouse = 'a' -- Enable mouse support
 vim.opt.termguicolors = true -- Enable 24-bit RGB colors
 vim.opt.showmode = false -- Don't show mode (lualine will show it)
@@ -374,6 +374,12 @@ require("lazy").setup({
       -- Enable navigation between tmux and vim
       vim.g.tmux_navigator_save_on_switch = 2
     end
+  },
+
+  -- Codeium
+  {
+    'Exafunction/codeium.vim',
+    event = 'BufEnter'
   },
 })
 

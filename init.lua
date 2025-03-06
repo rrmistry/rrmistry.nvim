@@ -376,10 +376,9 @@ require("lazy").setup({
     end
   },
 
-  -- Codeium
-  {
-    'Exafunction/codeium.vim',
-    event = 'BufEnter'
-  },
+  -- -- Codeium
+  -- {
+  --   'Exafunction/codeium.vim',
+  --   event = 'BufEnter'
+  -- },
 })
-

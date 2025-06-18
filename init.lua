@@ -74,7 +74,7 @@ require("lazy").setup({
     end,
   },
 
-  -- File explorer
+  -- File explorer (neo-tree - modern VS Code-like)
   {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v3.x",
@@ -84,21 +84,148 @@ require("lazy").setup({
       "MunifTanjim/nui.nvim",
     },
     config = function()
-      -- Key mapping to toggle
-      vim.keymap.set('n', '<leader>e', ':Neotree toggle<CR>')
+      -- disable netrw
+      vim.g.loaded_netrw = 1
+      vim.g.loaded_netrwPlugin = 1
 
-      -- Configure Neo-tree
-      require('neo-tree').setup({
+      -- Key mapping to toggle
+      vim.keymap.set('n', '<leader>e', ':Neotree toggle<CR>', { desc = 'Toggle File Explorer' })
+      vim.keymap.set('n', '<leader>o', ':Neotree focus<CR>', { desc = 'Focus File Explorer' })
+      vim.keymap.set('n', '<leader>gs', ':Neotree git_status<CR>', { desc = 'Git Status' })
+
+      require("neo-tree").setup({
+        close_if_last_window = false,
+        popup_border_style = "rounded",
+        enable_git_status = true,
+        enable_diagnostics = true,
+        default_component_configs = {
+          container = {
+            enable_character_fade = true
+          },
+          indent = {
+            indent_size = 2,
+            padding = 1,
+            with_markers = true,
+            indent_marker = "│",
+            last_indent_marker = "└",
+            highlight = "NeoTreeIndentMarker",
+          },
+          icon = {
+            folder_closed = "",
+            folder_open = "",
+            folder_empty = "󰜌",
+            default = "*",
+          },
+          modified = {
+            symbol = "[+]",
+            highlight = "NeoTreeModified",
+          },
+          name = {
+            trailing_slash = false,
+            use_git_status_colors = true,
+            highlight = "NeoTreeFileName",
+          },
+          git_status = {
+            symbols = {
+              added     = "✚",
+              modified  = "",
+              deleted   = "✖",
+              renamed   = "󰁕",
+              untracked = "",
+              ignored   = "",
+              unstaged  = "󰄱",
+              staged    = "",
+              conflict  = "",
+            }
+          },
+        },
         window = {
           position = "left",
           width = 30,
+          mapping_options = {
+            noremap = true,
+            nowait = true,
+          },
+          mappings = {
+            ["<space>"] = { 
+              "toggle_node", 
+              nowait = false,
+            },
+            ["<2-LeftMouse>"] = "open",
+            ["<cr>"] = "open",
+            ["<esc>"] = "cancel",
+            ["P"] = { "toggle_preview", config = { use_float = true } },
+            ["l"] = "focus_preview",
+            ["S"] = "open_split",
+            ["s"] = "open_vsplit",
+            ["t"] = "open_tabnew",
+            ["w"] = "open_with_window_picker",
+            ["C"] = "close_node",
+            ["z"] = "close_all_nodes",
+            ["a"] = { 
+              "add",
+              config = {
+                show_path = "none"
+              }
+            },
+            ["A"] = "add_directory",
+            ["d"] = "delete",
+            ["r"] = "rename",
+            ["y"] = "copy_to_clipboard",
+            ["x"] = "cut_to_clipboard",
+            ["p"] = "paste_from_clipboard",
+            ["c"] = "copy",
+            ["m"] = "move",
+            ["q"] = "close_window",
+            ["R"] = "refresh",
+            ["?"] = "show_help",
+            ["<"] = "prev_source",
+            [">"] = "next_source",
+          }
         },
+        filesystem = {
+          filtered_items = {
+            visible = false,
+            hide_dotfiles = false,
+            hide_gitignored = false,
+            hide_hidden = true,
+          },
+          follow_current_file = {
+            enabled = true,
+            leave_dirs_open = false,
+          },
+          group_empty_dirs = false,
+          hijack_netrw_behavior = "open_default",
+          use_libuv_file_watcher = true,
+        },
+        buffers = {
+          follow_current_file = {
+            enabled = true,
+            leave_dirs_open = false,
+          },
+          group_empty_dirs = true,
+          show_unloaded = true,
+        },
+        git_status = {
+          window = {
+            position = "float",
+            mappings = {
+              ["A"]  = "git_add_all",
+              ["gu"] = "git_unstage_file",
+              ["ga"] = "git_add_file",
+              ["gr"] = "git_revert_file",
+              ["gc"] = "git_commit",
+              ["gp"] = "git_push",
+              ["gg"] = "git_commit_and_push",
+            }
+          }
+        }
       })
 
-      -- Open Neo-tree on startup
+      -- Auto open on startup without focus
       vim.api.nvim_create_autocmd("VimEnter", {
         callback = function()
-          vim.cmd("Neotree show")
+          require("neo-tree.command").execute({ action = "show" })
         end
       })
     end
@@ -211,12 +338,26 @@ require("lazy").setup({
       require("bufferline").setup({
         options = {
           mode = "buffers",
-          separator_style = "slant",
+          separator_style = "thin",
+          always_show_bufferline = false,
+          show_buffer_close_icons = true,
+          show_close_icon = true,
+          color_icons = true,
+          offsets = {
+            {
+              filetype = "neo-tree",
+              text = "File Explorer",
+              text_align = "center",
+              separator = true,
+            }
+          },
         },
       })
-      -- Navigate buffers using Tab and Shift-Tab
+      -- Navigate buffers
       vim.keymap.set('n', '<Tab>', ':BufferLineCycleNext<CR>')
       vim.keymap.set('n', '<S-Tab>', ':BufferLineCyclePrev<CR>')
+      vim.keymap.set('n', '<leader>x', ':bdelete<CR>', { desc = 'Close Buffer' })
+      vim.keymap.set('n', '<leader>X', ':bdelete!<CR>', { desc = 'Force Close Buffer' })
     end,
   },
 

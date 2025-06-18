@@ -263,6 +263,7 @@ require("lazy").setup({
       {'saadparwaiz1/cmp_luasnip'},
       {'hrsh7th/cmp-nvim-lsp'},
       {'hrsh7th/cmp-nvim-lua'},
+      {'hrsh7th/cmp-cmdline'},
 
       -- Snippets
       {'L3MON4D3/LuaSnip'},
@@ -280,6 +281,27 @@ require("lazy").setup({
         handlers = {
           lsp_zero.default_setup,
         },
+      })
+
+      -- Setup nvim-cmp for command line
+      local cmp = require('cmp')
+      
+      -- Command line completion
+      cmp.setup.cmdline(':', {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = cmp.config.sources({
+          { name = 'path' }
+        }, {
+          { name = 'cmdline' }
+        })
+      })
+
+      -- Search completion
+      cmp.setup.cmdline({ '/', '?' }, {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = {
+          { name = 'buffer' }
+        }
       })
     end
   },
@@ -391,6 +413,30 @@ require("lazy").setup({
     end,
   },
 
+  -- Lazygit integration
+  {
+    'kdheepak/lazygit.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+    },
+    config = function()
+      vim.keymap.set('n', '<leader>lg', ':LazyGit<CR>', { desc = 'Open LazyGit' })
+      vim.keymap.set('n', '<leader>lf', ':LazyGitFilter<CR>', { desc = 'LazyGit Filter' })
+      vim.keymap.set('n', '<leader>lc', ':LazyGitFilterCurrentFile<CR>', { desc = 'LazyGit Current File' })
+    end,
+  },
+
+  -- Fugitive: Vim's premier Git integration
+  {
+    'tpope/vim-fugitive',
+    config = function()
+      vim.keymap.set('n', '<leader>gs', ':Git<CR>', { desc = 'Git Status' })
+      vim.keymap.set('n', '<leader>gb', ':Git blame<CR>', { desc = 'Git Blame' })
+      vim.keymap.set('n', '<leader>gd', ':Gdiffsplit<CR>', { desc = 'Git Diff Split' })
+      vim.keymap.set('n', '<leader>gh', ':0Gclog<CR>', { desc = 'Git History' })
+    end,
+  },
+
   -- Neogit: Magit-like Git interface
   {
     'NeogitOrg/neogit',
@@ -405,23 +451,31 @@ require("lazy").setup({
       neogit.setup {
         -- Customize Neogit settings
         disable_signs = false,
-        kind = "tab",  -- Open in a new tab
+        kind = "split",  -- Open in a split
         signs = {
           -- Customize git signs
           section = { "▸", "▾" },
           item = { "▸", "▾" },
+          hunk = { "", "" },
         },
         -- Integrations
         integrations = {
-          diffview = true
-        }
+          diffview = true,
+          telescope = true,
+        },
       }
 
       -- Key mappings
-      vim.keymap.set('n', '<leader>gg', neogit.open, { desc = 'Open Neogit' })
-      vim.keymap.set('n', '<leader>gc', function() 
+      vim.keymap.set('n', '<leader>ng', neogit.open, { desc = 'Open Neogit' })
+      vim.keymap.set('n', '<leader>nc', function() 
         neogit.open({ "commit" }) 
-      end, { desc = 'Open Neogit Commit' })
+      end, { desc = 'Neogit Commit' })
+      vim.keymap.set('n', '<leader>np', function()
+        neogit.open({ "push" })
+      end, { desc = 'Neogit Push' })
+      vim.keymap.set('n', '<leader>nl', function()
+        neogit.open({ "pull" })
+      end, { desc = 'Neogit Pull' })
     end
   },
 
@@ -516,6 +570,57 @@ require("lazy").setup({
       vim.g.tmux_navigator_save_on_switch = 2
     end
   },
+
+  -- Command-line completion with noice.nvim (modern UI)
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "rcarriga/nvim-notify",
+    },
+    config = function()
+      require("noice").setup({
+        cmdline = {
+          enabled = true,
+          view = "cmdline_popup",
+          format = {
+            cmdline = { pattern = "^:", icon = ":", lang = "vim" },
+            search_down = { kind = "search", pattern = "^/", icon = "/", lang = "regex" },
+            search_up = { kind = "search", pattern = "^%?", icon = "?", lang = "regex" },
+          },
+        },
+        messages = {
+          enabled = true,
+          view = "mini",
+          view_error = "mini",
+          view_warn = "mini",
+        },
+        popupmenu = {
+          enabled = true,
+          backend = "cmp",
+        },
+        lsp = {
+          progress = {
+            enabled = false,
+          },
+          override = {
+            ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+            ["vim.lsp.util.stylize_markdown"] = true,
+            ["cmp.entry.get_documentation"] = true,
+          },
+        },
+        presets = {
+          bottom_search = true,
+          command_palette = true,
+          long_message_to_split = true,
+          inc_rename = false,
+          lsp_doc_border = false,
+        },
+      })
+    end,
+  },
+
 
   -- -- Codeium
   -- {

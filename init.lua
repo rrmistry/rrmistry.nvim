@@ -1,4 +1,24 @@
 -- ~/.config/nvim/init.lua
+
+-- ASCII-only mode configuration (no Nerd Fonts required)
+local icons = {
+  folder_closed = "[+]",
+  folder_open = "[-]",
+  folder_empty = "[.]",
+  git_add = "|",
+  git_change = "|",
+  git_delete = "_",
+  git_topdelete = "^",
+  git_changedelete = "~",
+  git_untracked = "?",
+  git_ignored = "!",
+  git_staged = "S",
+  git_conflict = "C",
+  section_open = "v",
+  section_closed = ">",
+  modified = "[+]",
+}
+
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -90,7 +110,6 @@ require("lazy").setup({
     branch = "v3.x",
     dependencies = {
       "nvim-lua/plenary.nvim",
-      "nvim-tree/nvim-web-devicons",
       "MunifTanjim/nui.nvim",
     },
     config = function()
@@ -121,13 +140,13 @@ require("lazy").setup({
             highlight = "NeoTreeIndentMarker",
           },
           icon = {
-            folder_closed = "",
-            folder_open = "",
-            folder_empty = "󰜌",
-            default = "*",
+            folder_closed = icons.folder_closed,
+            folder_open = icons.folder_open,
+            folder_empty = icons.folder_empty,
+            default = "○",
           },
           modified = {
-            symbol = "[+]",
+            symbol = icons.modified,
             highlight = "NeoTreeModified",
           },
           name = {
@@ -137,15 +156,15 @@ require("lazy").setup({
           },
           git_status = {
             symbols = {
-              added     = "✚",
-              modified  = "",
-              deleted   = "✖",
-              renamed   = "󰁕",
-              untracked = "",
-              ignored   = "",
-              unstaged  = "󰄱",
-              staged    = "",
-              conflict  = "",
+              added     = "+",
+              modified  = "M",
+              deleted   = "-",
+              renamed   = "R",
+              untracked = "?",
+              ignored   = "!",
+              unstaged  = "U",
+              staged    = "S",
+              conflict  = "C",
             }
           },
         },
@@ -244,7 +263,6 @@ require("lazy").setup({
   -- Status line
   {
     'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
       require('lualine').setup({
         options = {
@@ -322,7 +340,6 @@ require("lazy").setup({
     branch = '0.1.x',
     dependencies = {
       'nvim-lua/plenary.nvim',
-      'nvim-tree/nvim-web-devicons',
     },
     config = function()
       local builtin = require('telescope.builtin')
@@ -382,7 +399,6 @@ require("lazy").setup({
   {
     'akinsho/bufferline.nvim',
     version = "*",
-    dependencies = 'nvim-tree/nvim-web-devicons',
     config = function()
       require("bufferline").setup({
         options = {
@@ -391,7 +407,7 @@ require("lazy").setup({
           always_show_bufferline = false,
           show_buffer_close_icons = true,
           show_close_icon = true,
-          color_icons = true,
+          color_icons = false,
           offsets = {
             {
               filetype = "neo-tree",
@@ -416,11 +432,11 @@ require("lazy").setup({
     config = function()
       require('gitsigns').setup({
         signs = {
-          add = { text = '│' },
-          change = { text = '│' },
-          delete = { text = '_' },
-          topdelete = { text = '‾' },
-          changedelete = { text = '~' },
+          add = { text = icons.git_add },
+          change = { text = icons.git_change },
+          delete = { text = icons.git_delete },
+          topdelete = { text = icons.git_topdelete },
+          changedelete = { text = icons.git_changedelete },
         },
         on_attach = function(bufnr)
           local gs = package.loaded.gitsigns
@@ -481,9 +497,9 @@ require("lazy").setup({
         kind = "split",  -- Open in a split
         signs = {
           -- Customize git signs
-          section = { "▸", "▾" },
-          item = { "▸", "▾" },
-          hunk = { "", "" },
+          section = { icons.section_closed, icons.section_open },
+          item = { icons.section_closed, icons.section_open },
+          hunk = { "-", "+" },
         },
         -- Integrations
         integrations = {

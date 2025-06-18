@@ -408,6 +408,17 @@ require("lazy").setup({
           show_buffer_close_icons = true,
           show_close_icon = true,
           color_icons = false,
+          -- Enable tab wrapping
+          show_tab_indicators = true,
+          tab_size = 18,
+          max_name_length = 30,
+          max_prefix_length = 15,
+          truncate_names = true,
+          -- Custom close icon (ASCII)
+          buffer_close_icon = 'x',
+          close_icon = 'X',
+          left_trunc_marker = '<',
+          right_trunc_marker = '>',
           offsets = {
             {
               filetype = "neo-tree",
@@ -423,6 +434,15 @@ require("lazy").setup({
       vim.keymap.set('n', '<S-Tab>', ':BufferLineCyclePrev<CR>')
       vim.keymap.set('n', '<leader>x', ':bdelete<CR>', { desc = 'Close Buffer' })
       vim.keymap.set('n', '<leader>X', ':bdelete!<CR>', { desc = 'Force Close Buffer' })
+      
+      -- Additional buffer navigation shortcuts
+      vim.keymap.set('n', '<leader>bp', ':BufferLineCyclePrev<CR>', { desc = 'Previous Buffer' })
+      vim.keymap.set('n', '<leader>bn', ':BufferLineCycleNext<CR>', { desc = 'Next Buffer' })
+      vim.keymap.set('n', '<leader>bh', ':BufferLineCloseLeft<CR>', { desc = 'Close Buffers to Left' })
+      vim.keymap.set('n', '<leader>bl', ':BufferLineCloseRight<CR>', { desc = 'Close Buffers to Right' })
+      vim.keymap.set('n', '<leader>bo', ':BufferLineCloseOthers<CR>', { desc = 'Close Other Buffers' })
+      vim.keymap.set('n', '<leader>bc', ':BufferLinePickClose<CR>', { desc = 'Pick Buffer to Close' })
+      vim.keymap.set('n', '<leader>bb', ':BufferLinePick<CR>', { desc = 'Pick Buffer' })
     end,
   },
 

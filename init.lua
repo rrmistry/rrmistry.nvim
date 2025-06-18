@@ -47,8 +47,18 @@ vim.keymap.set('n', '<C-Up>', ':resize -2<CR>')
 vim.keymap.set('n', '<C-Down>', ':resize +2<CR>')
 
 -- Split creation (similar to VS Code)
-vim.keymap.set('n', '<leader>v', ':vsplit<CR>') -- Vertical split
-vim.keymap.set('n', '<leader>h', ':split<CR>')  -- Horizontal split
+vim.keymap.set('n', '<leader>v', ':vsplit<CR>', { desc = 'Vertical Split' })
+vim.keymap.set('n', '<leader>h', ':split<CR>', { desc = 'Horizontal Split' })
+
+-- Additional useful keymaps
+vim.keymap.set('n', '<leader><leader>', '<cmd>Telescope find_files<cr>', { desc = 'Find Files' })
+vim.keymap.set('n', '<leader>/', '<cmd>Telescope live_grep<cr>', { desc = 'Search in Files' })
+vim.keymap.set('n', '<leader>?', '<cmd>Telescope oldfiles<cr>', { desc = 'Recent Files' })
+vim.keymap.set('n', '<leader>sb', '<cmd>Telescope buffers<cr>', { desc = 'Search Buffers' })
+vim.keymap.set('n', '<leader>sh', '<cmd>Telescope help_tags<cr>', { desc = 'Search Help' })
+vim.keymap.set('n', '<leader>sd', '<cmd>Telescope diagnostics<cr>', { desc = 'Search Diagnostics' })
+vim.keymap.set('n', '<leader>sr', '<cmd>Telescope resume<cr>', { desc = 'Resume Last Search' })
+vim.keymap.set('n', '<leader>w', '<C-w>', { desc = 'Window Commands' })
 
 -- Whitespace rendering settings
 vim.opt.list = true -- Enable list mode for whitespace rendering
@@ -340,13 +350,30 @@ require("lazy").setup({
   -- Which-key for command palette
   {
     "folke/which-key.nvim",
+    event = "VeryLazy",
     config = function()
       vim.o.timeout = true
       vim.o.timeoutlen = 300
-      require("which-key").setup({
-        win = {  -- Changed from 'window' to 'win'
+      local wk = require("which-key")
+      
+      wk.setup({
+        win = {
           border = "single",
         },
+      })
+
+      -- Register key groups (which-key v3 format)
+      wk.add({
+        { "<leader>f", group = "Find" },
+        { "<leader>g", group = "Git" },
+        { "<leader>l", group = "LazyGit" },
+        { "<leader>n", group = "Neogit" },
+        { "<leader>d", group = "Diff/Debug" },
+        { "<leader>s", group = "Search" },
+        { "<leader>w", group = "Window" },
+        { "<leader>b", group = "Buffer" },
+        { "<leader>c", group = "Code" },
+        { "<leader>t", group = "Terminal/Toggle" },
       })
     end,
   },

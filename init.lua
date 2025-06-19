@@ -176,12 +176,9 @@ require("lazy").setup({
             nowait = true,
           },
           mappings = {
-            ["<space>"] = { 
-              "toggle_node", 
-              nowait = false,
-            },
+            ["<space>"] = "noop", -- Disable space to allow leader key functionality
             ["<2-LeftMouse>"] = "open",
-            ["<cr>"] = "open",
+            ["<cr>"] = "toggle_node", -- Enter opens/closes folders and files
             ["<esc>"] = "cancel",
             ["P"] = { "toggle_preview", config = { use_float = true } },
             ["l"] = "focus_preview",
@@ -634,6 +631,78 @@ require("lazy").setup({
     config = function()
       -- Enable navigation between tmux and vim
       vim.g.tmux_navigator_save_on_switch = 2
+      
+      -- Window navigation keybindings
+      -- Quick window switching with Alt/Option key
+      vim.keymap.set('n', '<M-h>', '<C-w>h', { desc = 'Navigate to left window' })
+      vim.keymap.set('n', '<M-j>', '<C-w>j', { desc = 'Navigate to window below' })
+      vim.keymap.set('n', '<M-k>', '<C-w>k', { desc = 'Navigate to window above' })
+      vim.keymap.set('n', '<M-l>', '<C-w>l', { desc = 'Navigate to right window' })
+      
+      -- Window navigation with leader key
+      vim.keymap.set('n', '<leader>wh', '<C-w>h', { desc = 'Go to left window' })
+      vim.keymap.set('n', '<leader>wj', '<C-w>j', { desc = 'Go to window below' })
+      vim.keymap.set('n', '<leader>wk', '<C-w>k', { desc = 'Go to window above' })
+      vim.keymap.set('n', '<leader>wl', '<C-w>l', { desc = 'Go to right window' })
+      
+      -- Window splitting
+      vim.keymap.set('n', '<leader>ws', '<C-w>s', { desc = 'Split window horizontally' })
+      vim.keymap.set('n', '<leader>wv', '<C-w>v', { desc = 'Split window vertically' })
+      
+      -- Window closing
+      vim.keymap.set('n', '<leader>wc', '<C-w>c', { desc = 'Close current window' })
+      vim.keymap.set('n', '<leader>wo', '<C-w>o', { desc = 'Close other windows' })
+      
+      -- Window resizing
+      vim.keymap.set('n', '<leader>w=', '<C-w>=', { desc = 'Make all windows equal size' })
+      vim.keymap.set('n', '<leader>w>', '<C-w>10>', { desc = 'Increase window width' })
+      vim.keymap.set('n', '<leader>w<', '<C-w>10<', { desc = 'Decrease window width' })
+      vim.keymap.set('n', '<leader>w+', '<C-w>5+', { desc = 'Increase window height' })
+      vim.keymap.set('n', '<leader>w-', '<C-w>5-', { desc = 'Decrease window height' })
+      
+      -- Quick window cycling
+      vim.keymap.set('n', '<leader>ww', '<C-w>w', { desc = 'Cycle through windows' })
+      vim.keymap.set('n', '<leader>wp', '<C-w>p', { desc = 'Go to previous window' })
+      
+      -- Window movement (swap windows)
+      vim.keymap.set('n', '<leader>wH', '<C-w>H', { desc = 'Move window to far left' })
+      vim.keymap.set('n', '<leader>wJ', '<C-w>J', { desc = 'Move window to bottom' })
+      vim.keymap.set('n', '<leader>wK', '<C-w>K', { desc = 'Move window to top' })
+      vim.keymap.set('n', '<leader>wL', '<C-w>L', { desc = 'Move window to far right' })
+      
+      -- Focus on main editing window (useful when tree view has focus)
+      vim.keymap.set('n', '<leader>wf', function()
+        -- Try to find a window that's not the tree view
+        local wins = vim.api.nvim_list_wins()
+        for _, win in ipairs(wins) do
+          local buf = vim.api.nvim_win_get_buf(win)
+          local ft = vim.api.nvim_buf_get_option(buf, 'filetype')
+          if ft ~= 'neo-tree' and ft ~= 'NvimTree' then
+            vim.api.nvim_set_current_win(win)
+            return
+          end
+        end
+      end, { desc = 'Focus on main editor window' })
+      
+      -- Quick escape from tree view to main editor
+      vim.keymap.set('n', '<Esc><Esc>', function()
+        local ft = vim.bo.filetype
+        if ft == 'neo-tree' or ft == 'NvimTree' then
+          vim.cmd('wincmd l')  -- Move to right window
+        end
+      end, { desc = 'Escape from tree view to editor' })
+      
+      -- Buffer navigation (for switching between open files)
+      vim.keymap.set('n', '<leader>bn', ':bnext<CR>', { desc = 'Next buffer' })
+      vim.keymap.set('n', '<leader>bp', ':bprevious<CR>', { desc = 'Previous buffer' })
+      vim.keymap.set('n', '<leader>bd', ':bdelete<CR>', { desc = 'Delete buffer' })
+      vim.keymap.set('n', '<leader>bf', ':bfirst<CR>', { desc = 'First buffer' })
+      vim.keymap.set('n', '<leader>bl', ':blast<CR>', { desc = 'Last buffer' })
+      vim.keymap.set('n', '<leader>bb', ':Telescope buffers<CR>', { desc = 'List buffers' })
+      
+      -- Quick buffer switching with Tab
+      vim.keymap.set('n', '<Tab>', ':bnext<CR>', { desc = 'Next buffer' })
+      vim.keymap.set('n', '<S-Tab>', ':bprevious<CR>', { desc = 'Previous buffer' })
     end
   },
 

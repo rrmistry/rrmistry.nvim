@@ -389,7 +389,6 @@ require("lazy").setup({
         { "<leader>dc", group = "Docker Container" },
         { "<leader>dv", group = "Docker Volume" },
         { "<leader>dn", group = "Docker Network" },
-        { "<leader>td", group = "Telescope Docker" },
         { "<leader>s", group = "Search" },
         { "<leader>w", group = "Window" },
         { "<leader>b", group = "Buffer" },
@@ -699,9 +698,15 @@ require("lazy").setup({
   {
     'jamestthompson3/nvim-remote-containers',
     config = function()
-      -- Basic configuration for remote containers
-      vim.keymap.set('n', '<leader>tc', ':RemoteContainersAttachToContainer<CR>', { desc = 'Attach to Container' })
-      vim.keymap.set('n', '<leader>tr', ':RemoteContainersRevealInExplorer<CR>', { desc = 'Reveal in Explorer' })
+      -- Remote container commands under Docker namespace
+      vim.keymap.set('n', '<leader>da', ':AttachToContainer<CR>', { desc = 'Attach to Container' })
+      vim.keymap.set('n', '<leader>db', ':BuildImage<CR>', { desc = 'Build Docker Image' })
+      vim.keymap.set('n', '<leader>ds', ':StartImage<CR>', { desc = 'Start Docker Image' })
+      
+      -- Docker Compose commands for remote containers
+      vim.keymap.set('n', '<leader>dCu', ':ComposeUp<CR>', { desc = 'Compose Up (Remote Containers)' })
+      vim.keymap.set('n', '<leader>dCd', ':ComposeDown<CR>', { desc = 'Compose Down (Remote Containers)' })
+      vim.keymap.set('n', '<leader>dCx', ':ComposeDestroy<CR>', { desc = 'Compose Destroy (Remote Containers)' })
     end
   },
 
@@ -843,12 +848,12 @@ require("lazy").setup({
     config = function()
       require('telescope').load_extension('docker')
       
-      -- Telescope Docker keymaps
-      vim.keymap.set('n', '<leader>tdc', '<cmd>Telescope docker containers<cr>', { desc = 'Docker Containers (Telescope)' })
-      vim.keymap.set('n', '<leader>tdi', '<cmd>Telescope docker images<cr>', { desc = 'Docker Images (Telescope)' })
-      vim.keymap.set('n', '<leader>tdn', '<cmd>Telescope docker networks<cr>', { desc = 'Docker Networks (Telescope)' })
-      vim.keymap.set('n', '<leader>tdv', '<cmd>Telescope docker volumes<cr>', { desc = 'Docker Volumes (Telescope)' })
-      vim.keymap.set('n', '<leader>tdd', '<cmd>Telescope docker compose<cr>', { desc = 'Docker Compose (Telescope)' })
+      -- Telescope Docker keymaps - integrated under Docker namespace
+      vim.keymap.set('n', '<leader>di', '<cmd>Telescope docker images<cr>', { desc = 'Docker Images (Telescope)' })
+      vim.keymap.set('n', '<leader>dc', '<cmd>Telescope docker containers<cr>', { desc = 'Docker Containers (Telescope)' })
+      vim.keymap.set('n', '<leader>dN', '<cmd>Telescope docker networks<cr>', { desc = 'Docker Networks (Telescope)' })
+      vim.keymap.set('n', '<leader>dV', '<cmd>Telescope docker volumes<cr>', { desc = 'Docker Volumes (Telescope)' })
+      vim.keymap.set('n', '<leader>dC', '<cmd>Telescope docker compose<cr>', { desc = 'Docker Compose (Telescope)' })
     end
   },
 })

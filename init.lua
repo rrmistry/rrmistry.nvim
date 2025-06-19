@@ -305,7 +305,7 @@ require("lazy").setup({
 
       require('mason').setup({})
       require('mason-lspconfig').setup({
-        ensure_installed = {'lua_ls'},
+        ensure_installed = {'lua_ls', 'dockerls', 'docker_compose_language_service', 'yamlls', 'jsonls'},
         handlers = {
           lsp_zero.default_setup,
         },
@@ -356,7 +356,7 @@ require("lazy").setup({
     build = ":TSUpdate",
     config = function()
       require("nvim-treesitter.configs").setup({
-        ensure_installed = { "lua", "vim", "javascript", "typescript", "python" },
+        ensure_installed = { "lua", "vim", "javascript", "typescript", "python", "dockerfile", "yaml", "json", "bash" },
         auto_install = true,
         highlight = { enable = true },
         indent = { enable = true },
@@ -385,7 +385,11 @@ require("lazy").setup({
         { "<leader>g", group = "Git" },
         { "<leader>l", group = "LazyGit" },
         { "<leader>n", group = "Neogit" },
-        { "<leader>d", group = "Diff/Debug" },
+        { "<leader>d", group = "Diff/Debug/Docker" },
+        { "<leader>dc", group = "Docker Container" },
+        { "<leader>dv", group = "Docker Volume" },
+        { "<leader>dn", group = "Docker Network" },
+        { "<leader>td", group = "Telescope Docker" },
         { "<leader>s", group = "Search" },
         { "<leader>w", group = "Window" },
         { "<leader>b", group = "Buffer" },
@@ -690,4 +694,161 @@ require("lazy").setup({
   --   'Exafunction/codeium.vim',
   --   event = 'BufEnter'
   -- },
+
+  -- Docker support
+  {
+    'jamestthompson3/nvim-remote-containers',
+    config = function()
+      -- Basic configuration for remote containers
+      vim.keymap.set('n', '<leader>tc', ':RemoteContainersAttachToContainer<CR>', { desc = 'Attach to Container' })
+      vim.keymap.set('n', '<leader>tr', ':RemoteContainersRevealInExplorer<CR>', { desc = 'Reveal in Explorer' })
+    end
+  },
+
+  -- Docker compose and container management
+  {
+    'dgrbrady/nvim-docker',
+    dependencies = {'nvim-lua/plenary.nvim', 'MunifTanjim/nui.nvim'},
+    config = function()
+      -- Docker keymaps
+      vim.keymap.set('n', '<leader>dcc', ':DockerContainers<CR>', { desc = 'Docker Containers' })
+      vim.keymap.set('n', '<leader>dci', ':DockerImages<CR>', { desc = 'Docker Images' })
+      vim.keymap.set('n', '<leader>dcl', ':DockerContainerLogs<CR>', { desc = 'Container Logs' })
+      vim.keymap.set('n', '<leader>dcs', ':DockerContainerStart<CR>', { desc = 'Start Container' })
+      vim.keymap.set('n', '<leader>dcx', ':DockerContainerStop<CR>', { desc = 'Stop Container' })
+      vim.keymap.set('n', '<leader>dcr', ':DockerContainerRestart<CR>', { desc = 'Restart Container' })
+      vim.keymap.set('n', '<leader>dce', ':DockerContainerExec<CR>', { desc = 'Exec into Container' })
+    end
+  },
+
+  -- Docker compose file support
+  {
+    'https://github.com/kkvh/vim-docker-tools',
+    init = function()
+      -- Configure docker tools to use a vertical split instead of horizontal
+      vim.g.dockertools_size = vim.o.columns
+    end,
+    config = function()
+      -- Docker tools keybindings
+      vim.keymap.set('n', '<leader>do', ':DockerToolsOpen<CR>', { desc = 'Docker Tools Open' })
+      vim.keymap.set('n', '<leader>dx', ':DockerToolsClose<CR>', { desc = 'Docker Tools Close' })
+      
+      -- Docker compose commands
+      vim.keymap.set('n', '<leader>dcu', ':DockerToolsComposeUp<CR>', { desc = 'Docker Compose Up' })
+      vim.keymap.set('n', '<leader>dcd', ':DockerToolsComposeDown<CR>', { desc = 'Docker Compose Down' })
+      vim.keymap.set('n', '<leader>dcb', ':DockerToolsComposeBuild<CR>', { desc = 'Docker Compose Build' })
+      vim.keymap.set('n', '<leader>dcr', ':DockerToolsComposeRestart<CR>', { desc = 'Docker Compose Restart' })
+      
+      -- Docker Volume Management
+      vim.keymap.set('n', '<leader>dvl', function() 
+        vim.cmd('!docker volume ls')
+      end, { desc = 'List Docker Volumes' })
+      
+      vim.keymap.set('n', '<leader>dvi', function()
+        local volume = vim.fn.input('Volume name to inspect: ')
+        if volume ~= '' then
+          vim.cmd('!docker volume inspect ' .. volume)
+        end
+      end, { desc = 'Inspect Docker Volume' })
+      
+      vim.keymap.set('n', '<leader>dvc', function()
+        local volume = vim.fn.input('New volume name: ')
+        if volume ~= '' then
+          vim.cmd('!docker volume create ' .. volume)
+        end
+      end, { desc = 'Create Docker Volume' })
+      
+      vim.keymap.set('n', '<leader>dvr', function()
+        local volume = vim.fn.input('Volume name to remove: ')
+        if volume ~= '' then
+          local confirm = vim.fn.confirm('Remove volume ' .. volume .. '?', '&Yes\n&No', 2)
+          if confirm == 1 then
+            vim.cmd('!docker volume rm ' .. volume)
+          end
+        end
+      end, { desc = 'Remove Docker Volume' })
+      
+      vim.keymap.set('n', '<leader>dvp', function()
+        vim.cmd('!docker volume prune -f')
+      end, { desc = 'Prune Unused Volumes' })
+      
+      -- Docker Network Management
+      vim.keymap.set('n', '<leader>dnl', function()
+        vim.cmd('!docker network ls')
+      end, { desc = 'List Docker Networks' })
+      
+      vim.keymap.set('n', '<leader>dni', function()
+        local network = vim.fn.input('Network name to inspect: ')
+        if network ~= '' then
+          vim.cmd('!docker network inspect ' .. network)
+        end
+      end, { desc = 'Inspect Docker Network' })
+      
+      vim.keymap.set('n', '<leader>dnc', function()
+        local network = vim.fn.input('New network name: ')
+        if network ~= '' then
+          local driver = vim.fn.input('Driver (bridge/overlay/host/none) [bridge]: ')
+          if driver == '' then driver = 'bridge' end
+          vim.cmd('!docker network create --driver ' .. driver .. ' ' .. network)
+        end
+      end, { desc = 'Create Docker Network' })
+      
+      vim.keymap.set('n', '<leader>dnr', function()
+        local network = vim.fn.input('Network name to remove: ')
+        if network ~= '' then
+          local confirm = vim.fn.confirm('Remove network ' .. network .. '?', '&Yes\n&No', 2)
+          if confirm == 1 then
+            vim.cmd('!docker network rm ' .. network)
+          end
+        end
+      end, { desc = 'Remove Docker Network' })
+      
+      vim.keymap.set('n', '<leader>dnp', function()
+        vim.cmd('!docker network prune -f')
+      end, { desc = 'Prune Unused Networks' })
+      
+      vim.keymap.set('n', '<leader>dnx', function()
+        local container = vim.fn.input('Container name/id: ')
+        if container ~= '' then
+          local network = vim.fn.input('Network name: ')
+          if network ~= '' then
+            vim.cmd('!docker network connect ' .. network .. ' ' .. container)
+          end
+        end
+      end, { desc = 'Connect Container to Network' })
+      
+      vim.keymap.set('n', '<leader>dnd', function()
+        local container = vim.fn.input('Container name/id: ')
+        if container ~= '' then
+          local network = vim.fn.input('Network name: ')
+          if network ~= '' then
+            vim.cmd('!docker network disconnect ' .. network .. ' ' .. container)
+          end
+        end
+      end, { desc = 'Disconnect Container from Network' })
+    end
+  },
+
+  -- Better dockerfile syntax and features
+  {
+    'ekalinin/Dockerfile.vim',
+  },
+
+  -- Container log viewer
+  {
+    'lpoto/telescope-docker.nvim',
+    dependencies = {
+      'nvim-telescope/telescope.nvim',
+    },
+    config = function()
+      require('telescope').load_extension('docker')
+      
+      -- Telescope Docker keymaps
+      vim.keymap.set('n', '<leader>tdc', '<cmd>Telescope docker containers<cr>', { desc = 'Docker Containers (Telescope)' })
+      vim.keymap.set('n', '<leader>tdi', '<cmd>Telescope docker images<cr>', { desc = 'Docker Images (Telescope)' })
+      vim.keymap.set('n', '<leader>tdn', '<cmd>Telescope docker networks<cr>', { desc = 'Docker Networks (Telescope)' })
+      vim.keymap.set('n', '<leader>tdv', '<cmd>Telescope docker volumes<cr>', { desc = 'Docker Volumes (Telescope)' })
+      vim.keymap.set('n', '<leader>tdd', '<cmd>Telescope docker compose<cr>', { desc = 'Docker Compose (Telescope)' })
+    end
+  },
 })

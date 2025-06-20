@@ -339,6 +339,47 @@ require("lazy").setup({
       'nvim-lua/plenary.nvim',
     },
     config = function()
+      -- Check for required external dependencies
+      local function check_dependencies()
+        local dependencies = {
+          {
+            cmd = "rg",
+            name = "ripgrep",
+            install_cmd = {
+              darwin = "brew install ripgrep",
+              linux = "sudo apt-get install ripgrep || sudo dnf install ripgrep || sudo pacman -S ripgrep",
+              windows = "scoop install ripgrep or choco install ripgrep"
+            }
+          }
+        }
+        
+        for _, dep in ipairs(dependencies) do
+          if vim.fn.executable(dep.cmd) ~= 1 then
+            local os_name = vim.loop.os_uname().sysname:lower()
+            local install_cmd = dep.install_cmd[os_name] or dep.install_cmd.linux
+            
+            -- For macOS
+            if os_name == "darwin" then
+              install_cmd = dep.install_cmd.darwin
+            end
+            
+            vim.notify(
+              string.format(
+                "⚠️  Missing dependency: %s (%s) is not installed!\n\nTo install, run:\n%s\n\nTelescope live_grep will not work without it.",
+                dep.name,
+                dep.cmd,
+                install_cmd
+              ),
+              vim.log.levels.WARN,
+              { title = "Telescope Dependency Missing" }
+            )
+          end
+        end
+      end
+      
+      -- Run dependency check on startup
+      check_dependencies()
+      
       local builtin = require('telescope.builtin')
       vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Find Files' })
       vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Live Grep' })

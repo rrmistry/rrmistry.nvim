@@ -78,6 +78,18 @@ vim.keymap.set('n', '<leader>sb', '<cmd>Telescope buffers<cr>', { desc = 'Search
 vim.keymap.set('n', '<leader>sh', '<cmd>Telescope help_tags<cr>', { desc = 'Search Help' })
 vim.keymap.set('n', '<leader>sd', '<cmd>Telescope diagnostics<cr>', { desc = 'Search Diagnostics' })
 vim.keymap.set('n', '<leader>sr', '<cmd>Telescope resume<cr>', { desc = 'Resume Last Search' })
+vim.keymap.set('n', '<leader>bb', '<cmd>Telescope buffers<cr>', { desc = 'Browse Buffers' })
+
+-- Buffer navigation keybindings (replacing BufferLine)
+vim.keymap.set('n', '<Tab>', ':bnext<CR>', { desc = 'Next Buffer' })
+vim.keymap.set('n', '<S-Tab>', ':bprevious<CR>', { desc = 'Previous Buffer' })
+vim.keymap.set('n', '<leader>x', ':bdelete<CR>', { desc = 'Close Buffer' })
+vim.keymap.set('n', '<leader>X', ':bdelete!<CR>', { desc = 'Force Close Buffer' })
+vim.keymap.set('n', '<leader>bp', ':bprevious<CR>', { desc = 'Previous Buffer' })
+vim.keymap.set('n', '<leader>bn', ':bnext<CR>', { desc = 'Next Buffer' })
+vim.keymap.set('n', '<leader>bf', ':bfirst<CR>', { desc = 'First Buffer' })
+vim.keymap.set('n', '<leader>bl', ':blast<CR>', { desc = 'Last Buffer' })
+
 vim.keymap.set('n', '<leader>w', '<C-w>', { desc = 'Window Commands' })
 
 -- Whitespace rendering settings
@@ -436,7 +448,7 @@ require("lazy").setup({
     end,
   },
 
-  -- Bufferline for tab-like interface
+  -- Bufferline for visual tab display only (no keybindings)
   {
     'akinsho/bufferline.nvim',
     version = "*",
@@ -445,19 +457,15 @@ require("lazy").setup({
         options = {
           mode = "buffers",
           separator_style = "thin",
-          always_show_bufferline = false,
-          show_buffer_close_icons = true,
-          show_close_icon = true,
+          always_show_bufferline = true,
+          show_buffer_close_icons = false,
+          show_close_icon = false,
           color_icons = false,
-          -- Enable tab wrapping
           show_tab_indicators = true,
           tab_size = 18,
           max_name_length = 30,
           max_prefix_length = 15,
           truncate_names = true,
-          -- Custom close icon (ASCII)
-          buffer_close_icon = 'x',
-          close_icon = 'X',
           left_trunc_marker = '<',
           right_trunc_marker = '>',
           offsets = {
@@ -470,20 +478,7 @@ require("lazy").setup({
           },
         },
       })
-      -- Navigate buffers
-      vim.keymap.set('n', '<Tab>', ':BufferLineCycleNext<CR>')
-      vim.keymap.set('n', '<S-Tab>', ':BufferLineCyclePrev<CR>')
-      vim.keymap.set('n', '<leader>x', ':bdelete<CR>', { desc = 'Close Buffer' })
-      vim.keymap.set('n', '<leader>X', ':bdelete!<CR>', { desc = 'Force Close Buffer' })
-      
-      -- Additional buffer navigation shortcuts
-      vim.keymap.set('n', '<leader>bp', ':BufferLineCyclePrev<CR>', { desc = 'Previous Buffer' })
-      vim.keymap.set('n', '<leader>bn', ':BufferLineCycleNext<CR>', { desc = 'Next Buffer' })
-      vim.keymap.set('n', '<leader>bh', ':BufferLineCloseLeft<CR>', { desc = 'Close Buffers to Left' })
-      vim.keymap.set('n', '<leader>bl', ':BufferLineCloseRight<CR>', { desc = 'Close Buffers to Right' })
-      vim.keymap.set('n', '<leader>bo', ':BufferLineCloseOthers<CR>', { desc = 'Close Other Buffers' })
-      vim.keymap.set('n', '<leader>bc', ':BufferLinePickClose<CR>', { desc = 'Pick Buffer to Close' })
-      vim.keymap.set('n', '<leader>bb', ':BufferLinePick<CR>', { desc = 'Pick Buffer' })
+      -- No keybindings here - we use Telescope and native commands instead
     end,
   },
 
@@ -733,17 +728,7 @@ require("lazy").setup({
         end
       end, { desc = 'Escape from tree view to editor' })
       
-      -- Buffer navigation (for switching between open files)
-      vim.keymap.set('n', '<leader>bn', ':bnext<CR>', { desc = 'Next buffer' })
-      vim.keymap.set('n', '<leader>bp', ':bprevious<CR>', { desc = 'Previous buffer' })
-      vim.keymap.set('n', '<leader>bd', ':bdelete<CR>', { desc = 'Delete buffer' })
-      vim.keymap.set('n', '<leader>bf', ':bfirst<CR>', { desc = 'First buffer' })
-      vim.keymap.set('n', '<leader>bl', ':blast<CR>', { desc = 'Last buffer' })
-      vim.keymap.set('n', '<leader>bb', ':Telescope buffers<CR>', { desc = 'List buffers' })
-      
-      -- Quick buffer switching with Tab
-      vim.keymap.set('n', '<Tab>', ':bnext<CR>', { desc = 'Next buffer' })
-      vim.keymap.set('n', '<S-Tab>', ':bprevious<CR>', { desc = 'Previous buffer' })
+      -- Buffer navigation is handled above with native Vim commands
     end
   },
 

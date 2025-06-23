@@ -90,6 +90,14 @@ vim.keymap.set('n', '<leader>bn', ':bnext<CR>', { desc = 'Next Buffer' })
 vim.keymap.set('n', '<leader>bf', ':bfirst<CR>', { desc = 'First Buffer' })
 vim.keymap.set('n', '<leader>bl', ':blast<CR>', { desc = 'Last Buffer' })
 
+-- Terminal mode keybindings
+vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+vim.keymap.set('t', '<C-w>h', '<C-\\><C-n><C-w>h', { desc = 'Navigate left from terminal' })
+vim.keymap.set('t', '<C-w>j', '<C-\\><C-n><C-w>j', { desc = 'Navigate down from terminal' })
+vim.keymap.set('t', '<C-w>k', '<C-\\><C-n><C-w>k', { desc = 'Navigate up from terminal' })
+vim.keymap.set('t', '<C-w>l', '<C-\\><C-n><C-w>l', { desc = 'Navigate right from terminal' })
+vim.keymap.set('n', '<leader>tt', ':terminal<CR>', { desc = 'Open terminal' })
+
 vim.keymap.set('n', '<leader>w', '<C-w>', { desc = 'Window Commands' })
 
 -- Whitespace rendering settings

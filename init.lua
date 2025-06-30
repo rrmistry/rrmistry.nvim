@@ -54,6 +54,29 @@ vim.opt.timeoutlen = 300 -- Time to wait for mapped sequence
 vim.opt.splitright = true -- Force splits to open on the right
 vim.opt.splitbelow = true -- Force splits to open below
 
+-- Auto-reload files when changed on disk
+vim.opt.autoread = true -- Automatically read file when changed outside vim
+
+-- Set up autocommands for file watching
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
+  pattern = "*",
+  callback = function()
+    if vim.fn.mode() ~= 'c' then
+      vim.cmd('checktime')
+    end
+  end,
+  desc = "Check for file changes and reload"
+})
+
+-- Show notification when file is reloaded
+vim.api.nvim_create_autocmd("FileChangedShellPost", {
+  pattern = "*",
+  callback = function()
+    vim.notify("File reloaded: " .. vim.fn.expand("%"), vim.log.levels.INFO)
+  end,
+  desc = "Notify when file is reloaded"
+})
+
 -- Move between windows easily
 vim.keymap.set('n', '<C-h>', '<C-w>h') -- Move to left window
 vim.keymap.set('n', '<C-j>', '<C-w>j') -- Move to bottom window

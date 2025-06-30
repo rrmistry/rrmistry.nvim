@@ -91,21 +91,6 @@ vim.api.nvim_create_autocmd("VimEnter", {
   desc = "Open Telescope file finder on startup"
 })
 
--- Enable server mode for remote file opening
-vim.api.nvim_create_autocmd("VimEnter", {
-  callback = function()
-    -- Create a server socket based on current working directory
-    local cwd = vim.fn.getcwd()
-    local socket_name = cwd:gsub("[^%w]", "_") .. "_nvim"
-    local socket_path = "/tmp/" .. socket_name .. ".sock"
-    
-    -- Only start server if we don't already have a server address
-    if not vim.env.NVIM_LISTEN_ADDRESS and not vim.v.servername then
-      vim.fn.serverstart(socket_path)
-    end
-  end,
-  desc = "Start nvim server for remote connections"
-})
 
 -- Move between windows easily
 vim.keymap.set('n', '<C-h>', '<C-w>h') -- Move to left window

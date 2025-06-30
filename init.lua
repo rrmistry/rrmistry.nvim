@@ -77,6 +77,20 @@ vim.api.nvim_create_autocmd("FileChangedShellPost", {
   desc = "Notify when file is reloaded"
 })
 
+-- Open Telescope file finder on startup when no file is specified
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+    -- Only open Telescope if no files were specified and we're not in a git commit or similar
+    if vim.fn.argc() == 0 and vim.fn.line2byte('$') == -1 and not vim.env.GIT_EDITOR then
+      -- Delay slightly to let other plugins load
+      vim.defer_fn(function()
+        require('telescope.builtin').find_files()
+      end, 100)
+    end
+  end,
+  desc = "Open Telescope file finder on startup"
+})
+
 -- Move between windows easily
 vim.keymap.set('n', '<C-h>', '<C-w>h') -- Move to left window
 vim.keymap.set('n', '<C-j>', '<C-w>j') -- Move to bottom window

@@ -77,18 +77,33 @@ vim.api.nvim_create_autocmd("FileChangedShellPost", {
   desc = "Notify when file is reloaded"
 })
 
--- Open Telescope file finder on startup when no file is specified
+-- Smart startup behavior: Telescope on narrow screens, tree + telescope on wide screens
 vim.api.nvim_create_autocmd("VimEnter", {
   callback = function()
-    -- Only open Telescope if no files were specified and we're not in a git commit or similar
-    if vim.fn.argc() == 0 and vim.fn.line2byte('$') == -1 and not vim.env.GIT_EDITOR then
-      -- Delay slightly to let other plugins load
-      vim.defer_fn(function()
-        require('telescope.builtin').find_files()
-      end, 100)
+    -- Get screen dimensions for responsive behavior
+    local columns = vim.o.columns
+    local lines = vim.o.lines
+    local aspect_ratio = columns / lines
+    local is_desktop = columns >= 150 and aspect_ratio >= 1.8  -- Increased threshold for better phone detection
+    
+    if not vim.env.GIT_EDITOR then
+      if is_desktop then
+        -- Desktop: Only open Telescope if no files specified
+        if vim.fn.argc() == 0 and vim.fn.line2byte('$') == -1 then
+          vim.defer_fn(function()
+            require('telescope.builtin').find_files()
+          end, 100)
+        end
+        -- Tree view will be opened by Neo-tree's VimEnter autocmd
+      else
+        -- Mobile/narrow: Always open Telescope for file selection, skip tree view
+        vim.defer_fn(function()
+          require('telescope.builtin').find_files()
+        end, 100)
+      end
     end
   end,
-  desc = "Open Telescope file finder on startup"
+  desc = "Smart startup: Telescope on mobile, tree+telescope on desktop"
 })
 
 
@@ -109,7 +124,7 @@ vim.keymap.set('n', '<leader>v', ':vsplit<CR>', { desc = 'Vertical Split' })
 vim.keymap.set('n', '<leader>h', ':split<CR>', { desc = 'Horizontal Split' })
 
 -- Additional useful keymaps
-vim.keymap.set('n', '<leader><leader>', '<cmd>Telescope find_files<cr>', { desc = 'Find Files' })
+-- This will be updated to use smart_find_files later in the config
 vim.keymap.set('n', '<leader>/', '<cmd>Telescope live_grep<cr>', { desc = 'Search in Files' })
 vim.keymap.set('n', '<leader>?', '<cmd>Telescope oldfiles<cr>', { desc = 'Recent Files' })
 vim.keymap.set('n', '<leader>sb', '<cmd>Telescope buffers<cr>', { desc = 'Search Buffers' })
@@ -306,10 +321,44 @@ require("lazy").setup({
         }
       })
 
-      -- Auto open on startup without focus
+      -- Auto open tree view only on desktop screens (coordinated with Telescope startup)
       vim.api.nvim_create_autocmd("VimEnter", {
         callback = function()
-          require("neo-tree.command").execute({ action = "show" })
+          -- Use same responsive criteria as Telescope startup
+          local columns = vim.o.columns
+          local lines = vim.o.lines
+          local aspect_ratio = columns / lines
+          local is_desktop = columns >= 150 and aspect_ratio >= 1.8
+          
+          -- Only auto-open tree view on desktop screens
+          -- On mobile, Telescope will open instead for file selection
+          if is_desktop then
+            require("neo-tree.command").execute({ action = "show" })
+          end
+        end
+      })
+      
+      -- Also handle window resize events
+      vim.api.nvim_create_autocmd("VimResized", {
+        callback = function()
+          local columns = vim.o.columns
+          local lines = vim.o.lines
+          local aspect_ratio = columns / lines
+          local is_desktop = columns >= 150 and aspect_ratio >= 1.8
+          
+          -- Auto-close tree on narrow screens, but don't auto-open on resize
+          -- (let user manually open it when they want it)
+          if not is_desktop then
+            -- Check if neo-tree is currently open
+            local neo_tree_wins = vim.tbl_filter(function(win)
+              local buf = vim.api.nvim_win_get_buf(win)
+              return vim.bo[buf].filetype == 'neo-tree'
+            end, vim.api.nvim_list_wins())
+            
+            if #neo_tree_wins > 0 then
+              require("neo-tree.command").execute({ action = "close" })
+            end
+          end
         end
       })
     end
@@ -395,6 +444,7 @@ require("lazy").setup({
     branch = '0.1.x',
     dependencies = {
       'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope-frecency.nvim',
     },
     config = function()
       -- Check for required external dependencies
@@ -438,8 +488,43 @@ require("lazy").setup({
       -- Run dependency check on startup
       check_dependencies()
       
+      -- Setup telescope with frecency extension
+      require('telescope').setup({
+        defaults = {
+          file_sorter = require('telescope.sorters').get_fuzzy_file,
+          generic_sorter = require('telescope.sorters').get_generic_fuzzy_sorter,
+        },
+        pickers = {
+          find_files = {
+            find_command = {'fd', '--type', 'f', '--hidden', '--exclude', '.git'},
+          }
+        },
+        extensions = {
+          frecency = {
+            show_scores = false,
+            show_unindexed = true,
+            show_filter_column = false,
+            ignore_patterns = {"*.git/*", "*/tmp/*", "*/node_modules/*"},
+            disable_devicons = false,
+            default_workspace = 'CWD',
+            workspaces = {
+              ["project"] = vim.fn.getcwd(),
+            },
+            auto_validate = true,
+            matcher = "fuzzy",
+          }
+        }
+      })
+      
+      -- Load frecency extension
+      require('telescope').load_extension('frecency')
+      
       local builtin = require('telescope.builtin')
-      vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Find Files' })
+      
+      -- Set up keybindings with frecency that includes all files
+      vim.keymap.set('n', '<leader><leader>', '<cmd>Telescope frecency workspace=CWD<cr>', { desc = 'Find Files (Smart)' })
+      vim.keymap.set('n', '<leader>ff', '<cmd>Telescope frecency workspace=CWD<cr>', { desc = 'Find Files (Smart)' })
+      vim.keymap.set('n', '<leader>fa', builtin.find_files, { desc = 'Find All Files' })
       vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Live Grep' })
       vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Find Buffers' })
       vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Find Help' })

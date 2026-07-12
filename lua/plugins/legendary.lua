@@ -31,9 +31,10 @@ return {
       { "gd", description = "Go to definition" },
       { "K", description = "Show hover docs" },
       -- custom (defined in copypath.lua / grug-far.lua)
+      { "u", description = "Undo" },
+      { "<C-r>", description = "Redo" },
       { "<Leader>q", description = "Quit window" },
       { "<Leader>Q", description = "Quit Neovim" },
-      { "<Leader>:", description = "Open raw command line" },
       { "<Leader>yp", description = "Copy absolute path of file" },
       { "<Leader>yr", description = "Copy relative path of file" },
       { "<Leader>yn", description = "Copy filename" },
@@ -47,8 +48,6 @@ return {
     },
   },
   keys = {
-    -- ":" opens the palette; raw ex command line stays on <Leader>:
-    { ":", "<Cmd>Legendary<CR>", desc = "Command palette", mode = { "n", "v" } },
-    { "<Leader>:", ":", desc = "Raw command line", mode = { "n", "v" }, silent = false },
+    { "<C-p>", "<Cmd>Legendary<CR>", desc = "Command palette", mode = { "n", "v" } },
   },
 }

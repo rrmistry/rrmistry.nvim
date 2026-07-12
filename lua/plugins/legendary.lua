@@ -55,6 +55,10 @@ return {
       { "<Leader>gg", description = "Open lazygit (pull, push, stash, branch, merge)" },
       { "<Leader>gl", description = "Git blame current line" },
       { "<Leader>gL", description = "Git blame current line (full)" },
+      { "]g", description = "Jump to next git change in file" },
+      { "[g", description = "Jump to previous git change in file" },
+      { "]G", description = "Jump to last git change in file" },
+      { "[G", description = "Jump to first git change in file" },
       -- custom (defined in copypath.lua / grug-far.lua)
       { "u", description = "Undo" },
       { "<C-r>", description = "Redo" },

@@ -71,6 +71,7 @@ return {
       { ":sort u", description = "Sort lines & remove duplicates" },
       { ":setfiletype ", description = "Change language mode (set filetype)", unfinished = true },
       { ":GuessIndent", description = "Detect indentation from file" },
+      { ":RenderMarkdown toggle", description = "Toggle markdown preview (in-editor)" },
       { ":windo diffthis", description = "Compare visible splits (diff)" },
       { ":diffoff!", description = "Turn off diff view" },
       { ":Lazy sync", description = "Update plugins" },

@@ -8,6 +8,10 @@ return {
         select = {
           focus = "input",
           on_show = function() vim.cmd.startinsert() end,
+          -- rank previously-picked items higher while typing, so e.g.
+          -- "tab" learns to surface the buffer entries you actually use
+          -- above built-in tab-page commands
+          matcher = { frecency = true },
         },
       },
     },

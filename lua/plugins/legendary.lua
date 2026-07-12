@@ -15,6 +15,9 @@ return {
       { "u", description = "lowercase selection", mode = { "v" } },
       { "~", description = "Toggle case of selection", mode = { "v" } },
       { "gUiw", description = "UPPERCASE word under cursor" },
+      { "0", description = "Go to beginning of line", mode = { "n", "v" } },
+      { "^", description = "Go to first non-blank character of line", mode = { "n", "v" } },
+      { "$", description = "Go to end of line", mode = { "n", "v" } },
       -- AstroNvim defaults
       { "<Leader>ff", description = "Open file (fuzzy search)" },
       { "<Leader>fw", description = "Search text in project" },

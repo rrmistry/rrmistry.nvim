@@ -72,6 +72,8 @@ return {
       { "<Leader>yr", description = "Copy relative path of file" },
       { "<Leader>yn", description = "Copy filename" },
       { "<Leader>sr", description = "Search & replace in project (with preview)", mode = { "n", "v" } },
+      { "<Leader>sw", description = "Search & replace word under cursor" },
+      { "<Leader>sb", description = "Search & replace in current file" },
     },
     commands = {
       { ":enew", description = "New file (empty buffer in current window)" },

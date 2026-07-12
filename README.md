@@ -15,7 +15,21 @@ nvim
 | --- | --- |
 | `Ctrl+P` / `Ctrl+Shift+P` | Command palette ([legendary.nvim](https://github.com/mrjones2014/legendary.nvim)) — fuzzy-search commands and keymaps by plain-English descriptions. `:Legendary` always works |
 | `<Space>yp` / `<Space>yr` / `<Space>yn` | Copy absolute path / relative path / filename of the current file (reaches your local clipboard over SSH/tmux via OSC 52) |
-| `<Space>sr` | Project-wide search & replace with preview ([grug-far.nvim](https://github.com/MagicDuck/grug-far.nvim)) |
+| `<Space>sr` | Project-wide search & replace with preview ([grug-far.nvim](https://github.com/MagicDuck/grug-far.nvim)). `<Space>sw` prefills the word under cursor, `<Space>sb` scopes to the current file |
+
+### Search & replace panel (grug-far) cheat sheet
+
+VS Code-style global replace. Fill **Search** and **Replace** (diff preview appears per match), use **Files Filter** to include globs (`*.py`, `src/**` — one per line) and exclude with negative globs (`!**/node_modules/**`); extra rg options like `--iglob=!*.min.js` or `--pcre2` go in **Flags**.
+
+In the results panel (localleader is `,`):
+
+| Key | Action |
+| --- | --- |
+| `,j` / `,k` | Apply this match and jump to next / previous |
+| `dd` on a match | Exclude it from "apply all" |
+| `,s` | Apply all remaining matches (respects exclusions) |
+| `,c` | Close panel |
+| `g?` | Full help |
 
 ## Pulling updates from the AstroNvim template
 

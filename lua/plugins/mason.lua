@@ -11,6 +11,7 @@ return {
       ensure_installed = {
         -- install language servers
         "lua-language-server",
+        "typos-lsp", -- spelling warnings in code/comments/identifiers, low noise
 
         -- install formatters
         "stylua",

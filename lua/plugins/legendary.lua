@@ -56,6 +56,7 @@ return {
       -- more VS Code habits
       { "d0", description = "Delete to start of line" },
       { "<Leader>uZ", description = "Toggle zen mode" },
+      { "<Leader>us", description = "Toggle spell checking (dictionary-based)" },
       { "<Leader>ft", description = "Change color theme" },
       { "<Leader>gg", description = "Open lazygit (pull, push, stash, branch, merge)" },
       { "<Leader>gl", description = "Git blame current line" },

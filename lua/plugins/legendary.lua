@@ -31,6 +31,7 @@ return {
       { "<Leader>/", description = "Toggle comment", mode = { "n", "v" } },
       { "<Leader>lf", description = "Format document" },
       { "<Leader>la", description = "Code actions" },
+      { "<Leader>lS", description = "Symbols outline (document symbols sidebar)" },
       { "<Leader>lr", description = "Rename symbol" },
       { "gd", description = "Go to definition" },
       { "K", description = "Show hover docs" },
@@ -121,6 +122,10 @@ return {
           end
         end,
         description = "Switch focus between file tree and editor",
+      },
+      {
+        function() require("dropbar.api").pick() end,
+        description = "Breadcrumbs: pick path/symbol to jump to (like clicking VS Code breadcrumbs)",
       },
     },
   },

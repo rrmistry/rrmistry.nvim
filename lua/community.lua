@@ -13,4 +13,7 @@ return {
   { import = "astrocommunity.pack.python" }, -- basedpyright, black, isort, debugpy
   { import = "astrocommunity.pack.typescript" }, -- vtsls (VS Code's TS server), prettier
   { import = "astrocommunity.pack.astro" }, -- Astro.js: astro-language-server + parser
+  { import = "astrocommunity.pack.toml" },
+  { import = "astrocommunity.pack.docker" }, -- Dockerfile + docker-compose LSPs
+  { import = "astrocommunity.pack.bash" },
 }

@@ -20,6 +20,7 @@ return {
       { "<Leader>fw", description = "Search text in project" },
       { "<Leader>fo", description = "Open recent file" },
       { "<Leader>e", description = "Toggle file explorer" },
+      { "<Leader>o", description = "Toggle focus: file tree ↔ editor" },
       { "<Leader>w", description = "Save file" },
       { "<Leader>c", description = "Close file (buffer)" },
       { "]b", description = "Next editor tab (buffer)" },
@@ -100,12 +101,27 @@ return {
       { ":setfiletype ", description = "Change language mode (set filetype)", unfinished = true },
       { ":GuessIndent", description = "Detect indentation from file" },
       { ":RenderMarkdown toggle", description = "Toggle markdown preview (in-editor)" },
+      { ":Neotree position=current", description = "Open file tree full screen (in current window)" },
       { ":windo diffthis", description = "Compare visible splits (diff)" },
       { ":diffoff!", description = "Turn off diff view" },
       { ":Lazy sync", description = "Update plugins" },
       { ":Mason", description = "Manage language tools (LSP, formatters, linters)" },
       { ":GrugFar", description = "Find & replace across project" },
       { ":checkhealth", description = "Diagnose Neovim health" },
+    },
+    funcs = {
+      -- real function, not fed keystrokes: works from inside the neo-tree
+      -- window too, where <Space> (leader) is taken by toggle-folder
+      {
+        function()
+          if vim.bo.filetype == "neo-tree" then
+            vim.cmd.wincmd "p"
+          else
+            vim.cmd.Neotree "focus"
+          end
+        end,
+        description = "Switch focus between file tree and editor",
+      },
     },
   },
   keys = {

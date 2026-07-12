@@ -8,6 +8,8 @@ return {
   -- VS Code-style breadcrumbs under the tabline: relative file path plus
   -- symbol chain, clickable/pickable. Replaces AstroNvim's default winbar.
   { import = "astrocommunity.bars-and-lines.dropbar-nvim" },
+  -- In-terminal markdown preview (renders in the buffer; works over SSH/tmux)
+  { import = "astrocommunity.markdown-and-latex.render-markdown-nvim" },
   -- Language packs: LSP + treesitter + formatters auto-install via Mason on
   -- first launch, so a fresh `git clone` needs no hand-installed servers.
   { import = "astrocommunity.pack.python" }, -- basedpyright, black, isort, debugpy

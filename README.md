@@ -21,7 +21,7 @@ nvim
 
 VS Code-style global replace. Fill **Search** and **Replace** (diff preview appears per match), use **Files Filter** to include globs (`*.py`, `src/**` — one per line) and exclude with negative globs (`!**/node_modules/**`); extra rg options like `--iglob=!*.min.js` or `--pcre2` go in **Flags**.
 
-In the results panel (localleader is `,`):
+The panel opens in the current window. In it (localleader is `,`) — these also show up in the `Ctrl+P` palette while the panel is focused:
 
 | Key | Action |
 | --- | --- |

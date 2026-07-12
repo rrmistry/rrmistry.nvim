@@ -74,6 +74,21 @@ return {
       { "<Leader>sr", description = "Search & replace in project (with preview)", mode = { "n", "v" } },
       { "<Leader>sw", description = "Search & replace word under cursor" },
       { "<Leader>sb", description = "Search & replace in current file" },
+      -- grug-far panel actions: only shown in the palette while inside the
+      -- panel (ft filter). "," is the localleader, matching grug-far defaults.
+      { ",j", description = "Apply this match and go to next", filters = { ft = "grug-far" } },
+      { ",k", description = "Apply this match and go to previous", filters = { ft = "grug-far" } },
+      { ",l", description = "Apply this line only (keep in list)", filters = { ft = "grug-far" } },
+      { "dd", description = "Exclude this match from apply-all", filters = { ft = "grug-far" } },
+      { ",s", description = "Apply all remaining matches", filters = { ft = "grug-far" } },
+      { ",r", description = "Replace all (ignores exclusions)", filters = { ft = "grug-far" } },
+      { ",v", description = "Apply all matches in this file", filters = { ft = "grug-far" } },
+      { ",q", description = "Send results to quickfix list", filters = { ft = "grug-far" } },
+      { ",o", description = "Open match location", filters = { ft = "grug-far" } },
+      { ",i", description = "Preview match location", filters = { ft = "grug-far" } },
+      { ",b", description = "Abort running search/replace", filters = { ft = "grug-far" } },
+      { ",c", description = "Close search & replace panel", filters = { ft = "grug-far" } },
+      { "g?", description = "Show panel help", filters = { ft = "grug-far" } },
     },
     commands = {
       { ":enew", description = "New file (empty buffer in current window)" },

@@ -6,6 +6,7 @@ return {
   "MagicDuck/grug-far.nvim",
   cmd = "GrugFar",
   opts = {
+    windowCreationCommand = "enew", -- open in current window, not a vsplit
     -- folding = { foldlevel = 0 }, -- start files collapsed (VS Code tree feel)
   },
   keys = {

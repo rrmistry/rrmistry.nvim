@@ -10,6 +10,9 @@ return {
   { import = "astrocommunity.bars-and-lines.dropbar-nvim" },
   -- In-terminal markdown preview (renders in the buffer; works over SSH/tmux)
   { import = "astrocommunity.markdown-and-latex.render-markdown-nvim" },
+  -- Project-wide search & replace panel (grug-far): <Space>ss workspace,
+  -- <Space>sw word, <Space>sf file, <Space>se same-filetype, visual <Space>s
+  { import = "astrocommunity.search.grug-far-nvim" },
   -- Language packs: LSP + treesitter + formatters auto-install via Mason on
   -- first launch, so a fresh `git clone` needs no hand-installed servers.
   { import = "astrocommunity.pack.python" }, -- basedpyright, black, isort, debugpy

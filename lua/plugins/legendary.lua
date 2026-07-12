@@ -88,9 +88,11 @@ return {
       { "<Leader>yp", description = "Copy absolute path of file" },
       { "<Leader>yr", description = "Copy relative path of file" },
       { "<Leader>yn", description = "Copy filename" },
-      { "<Leader>sr", description = "Search & replace in project (with preview)", mode = { "n", "v" } },
+      { "<Leader>ss", description = "Search & replace in project (with preview)" },
       { "<Leader>sw", description = "Search & replace word under cursor" },
-      { "<Leader>sb", description = "Search & replace in current file" },
+      { "<Leader>sf", description = "Search & replace in current file" },
+      { "<Leader>se", description = "Search & replace in files of same type as current" },
+      { "<Leader>s", description = "Search & replace selection", mode = { "v" } },
       -- grug-far panel actions: only shown in the palette while inside the
       -- panel (ft filter). "," is the localleader, matching grug-far defaults.
       { ",j", description = "Apply this match and go to next", filters = { ft = "grug-far" } },

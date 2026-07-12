@@ -15,7 +15,7 @@ nvim
 | --- | --- |
 | `Ctrl+P` / `Ctrl+Shift+P` | Command palette ([legendary.nvim](https://github.com/mrjones2014/legendary.nvim)) — fuzzy-search commands and keymaps by plain-English descriptions. `:Legendary` always works |
 | `<Space>yp` / `<Space>yr` / `<Space>yn` | Copy absolute path / relative path / filename of the current file (reaches your local clipboard over SSH/tmux via OSC 52) |
-| `<Space>sr` | Project-wide search & replace with preview ([grug-far.nvim](https://github.com/MagicDuck/grug-far.nvim)). `<Space>sw` prefills the word under cursor, `<Space>sb` scopes to the current file |
+| `<Space>ss` | Project-wide search & replace with preview ([grug-far.nvim](https://github.com/MagicDuck/grug-far.nvim)). `<Space>sw` prefills the word under cursor, `<Space>sf` scopes to the current file, `<Space>se` to files of the same extension; visual `<Space>s` prefills the selection |
 
 ### Search & replace panel (grug-far) cheat sheet
 

@@ -48,9 +48,10 @@ return {
     },
   },
   keys = {
-    -- Needs extended-keys support end to end (terminal emulator + tmux
-    -- extended-keys on); without it the terminal sends plain Ctrl+P and
-    -- this never fires — fall back to :Legendary.
+    -- Both bound: Ctrl+Shift+P for VS Code muscle memory (needs extended-keys
+    -- support end to end), plain Ctrl+P for keyboards without Shift chords
+    -- (e.g. Termux) and terminals that collapse C-S-p into C-p anyway.
+    { "<C-p>", "<Cmd>Legendary<CR>", desc = "Command palette", mode = { "n", "v" } },
     { "<C-S-p>", "<Cmd>Legendary<CR>", desc = "Command palette", mode = { "n", "v" } },
   },
 }

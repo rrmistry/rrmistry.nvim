@@ -11,9 +11,33 @@ return {
     end,
   },
   {
+    -- VS Code-style F5: rerun the last-used configuration; only prompt on
+    -- the very first run. <Leader>dc keeps the always-ask picker for
+    -- switching configurations (launch.json entries show up there too).
+    "AstroNvim/astrocore",
+    opts = {
+      mappings = {
+        n = {
+          ["<F5>"] = {
+            function()
+              local dap = require "dap"
+              if dap.session() or not vim.g.dap_ran_once then
+                dap.continue()
+              else
+                dap.run_last()
+              end
+            end,
+            desc = "Debugger: Start (run last config)",
+          },
+        },
+      },
+    },
+  },
+  {
     "mfussenegger/nvim-dap",
     config = function()
       local dap = require "dap"
+      dap.listeners.after.event_initialized["f5_run_last"] = function() vim.g.dap_ran_once = true end
       dap.adapters["pwa-node"] = {
         type = "server",
         host = "localhost",

@@ -18,6 +18,14 @@ return {
       { "0", description = "Go to beginning of line", mode = { "n", "v" } },
       { "^", description = "Go to first non-blank character of line", mode = { "n", "v" } },
       { "$", description = "Go to end of line", mode = { "n", "v" } },
+      -- indent width follows 'shiftwidth', auto-inferred per file by guess-indent
+      { ">>", description = "Indent current line" },
+      { "<<", description = "Unindent current line" },
+      { ">", description = "Indent selection", mode = { "v" } },
+      { "<", description = "Unindent selection", mode = { "v" } },
+      { "gv", description = "Reselect last selection (e.g. to indent again)" },
+      { "<C-t>", description = "Indent current line (while typing)", mode = { "i" } },
+      { "<C-d>", description = "Unindent current line (while typing)", mode = { "i" } },
       -- AstroNvim defaults
       { "<Leader>ff", description = "Open file (fuzzy search)" },
       { "<Leader>fw", description = "Search text in project" },

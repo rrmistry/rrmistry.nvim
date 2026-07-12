@@ -48,6 +48,9 @@ return {
     },
   },
   keys = {
+    -- Ctrl+Shift+P needs terminal+tmux extended-keys support; where absent,
+    -- the keypress degrades to plain Ctrl+P, which is mapped too.
     { "<C-p>", "<Cmd>Legendary<CR>", desc = "Command palette", mode = { "n", "v" } },
+    { "<C-S-p>", "<Cmd>Legendary<CR>", desc = "Command palette", mode = { "n", "v" } },
   },
 }

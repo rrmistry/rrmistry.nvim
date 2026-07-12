@@ -12,4 +12,5 @@ return {
   -- first launch, so a fresh `git clone` needs no hand-installed servers.
   { import = "astrocommunity.pack.python" }, -- basedpyright, black, isort, debugpy
   { import = "astrocommunity.pack.typescript" }, -- vtsls (VS Code's TS server), prettier
+  { import = "astrocommunity.pack.astro" }, -- Astro.js: astro-language-server + parser
 }

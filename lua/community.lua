@@ -21,4 +21,6 @@ return {
   { import = "astrocommunity.pack.toml" },
   { import = "astrocommunity.pack.docker" }, -- Dockerfile + docker-compose LSPs
   { import = "astrocommunity.pack.bash" },
+  -- lazydocker terminal UI (<Space>td): containers, logs, exec, restart
+  { import = "astrocommunity.docker.lazydocker" },
 }

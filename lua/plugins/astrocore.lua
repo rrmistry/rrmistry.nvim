@@ -4,6 +4,10 @@ return {
   "AstroNvim/astrocore",
   ---@type AstroCoreOpts
   opts = {
+    -- Tiltfiles are Starlark; gets treesitter highlighting via auto_install
+    filetypes = {
+      filename = { Tiltfile = "starlark" },
+    },
     -- Keep the working directory on the project root (VS Code-workspace-like):
     -- version-control root first so breadcrumbs, file search, and grep stay
     -- relative to the repo regardless of where nvim was launched from or

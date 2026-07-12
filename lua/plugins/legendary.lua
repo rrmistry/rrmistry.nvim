@@ -70,6 +70,7 @@ return {
       { "<Leader>us", description = "Toggle spell checking (dictionary-based)" },
       { "<Leader>ft", description = "Change color theme" },
       { "<Leader>gg", description = "Open lazygit (pull, push, stash, branch, merge)" },
+      { "<Leader>td", description = "Open lazydocker (containers, logs, exec, restart)" },
       { "<Leader>gl", description = "Git blame current line" },
       { "<Leader>gL", description = "Git blame current line (full)" },
       { "<Leader>gs", description = "Stage / unstage git change (hunk)", mode = { "n", "v" } },

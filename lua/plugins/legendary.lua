@@ -165,6 +165,8 @@ return {
       -- for bigger jumps, e.g. :m+5 or :t-3)
       { ":t.", description = "Copy line down (duplicate below)" },
       { ":t-1", description = "Copy line up (duplicate above)" },
+      { ":'<,'>t'>", description = "Copy selection down (duplicate below)" },
+      { ":'<,'>t'<-1", description = "Copy selection up (duplicate above)" },
       { ":m+1", description = "Move line down (:m+2 for two lines, ...)" },
       { ":m-2", description = "Move line up (:m-3 for two lines, ...)" },
       { ":sort", description = "Sort lines ascending" },

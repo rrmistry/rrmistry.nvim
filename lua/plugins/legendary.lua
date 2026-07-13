@@ -149,6 +149,15 @@ return {
       { ",b", description = "Abort running search/replace", filters = { ft = "grug-far" } },
       { ",c", description = "Close search & replace panel", filters = { ft = "grug-far" } },
       { "g?", description = "Show panel help", filters = { ft = "grug-far" } },
+      -- diffview file panel actions (only shown while the git panel is focused)
+      { "s", description = "Stage / unstage file under cursor", filters = { ft = "DiffviewFiles" } },
+      { "S", description = "Stage all files", filters = { ft = "DiffviewFiles" } },
+      { "U", description = "Unstage all files", filters = { ft = "DiffviewFiles" } },
+      { "X", description = "Discard changes to file (restore committed state)", filters = { ft = "DiffviewFiles" } },
+      { "<CR>", description = "Open diff for selected file", filters = { ft = "DiffviewFiles" } },
+      { "<Tab>", description = "Open diff for next file", filters = { ft = "DiffviewFiles" } },
+      { "L", description = "Show commit log", filters = { ft = "DiffviewFiles" } },
+      { "g?", description = "Show git panel help", filters = { ft = "DiffviewFiles" } },
     },
     commands = {
       { ":enew", description = "New file (empty buffer in current window)" },

@@ -6,12 +6,14 @@
 return {
   {
     "jay-babu/mason-nvim-dap.nvim",
+    optional = true, -- merge-fragment on AstroNvim core's dap stack
     opts = function(_, opts)
       opts.ensure_installed = require("astrocore").list_insert_unique(opts.ensure_installed, { "js" })
     end,
   },
   {
     "mfussenegger/nvim-dap",
+    optional = true, -- merge-fragment on AstroNvim core's dap stack
     config = function()
       local dap = require "dap"
 

@@ -2,6 +2,7 @@
 -- focused on the input in insert mode — type immediately, no "i" needed.
 return {
   "folke/snacks.nvim",
+  optional = true, -- merge-fragment on AstroNvim core's snacks
   opts = {
     picker = {
       sources = {

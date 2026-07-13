@@ -26,8 +26,10 @@ return {
   -- editor upgrades (2026-07 survey picks)
   { import = "astrocommunity.editing-support.nvim-treesitter-context" }, -- sticky scroll
   -- VS Code-style stickiness: follow the top visible line (not the cursor),
-  -- so nested if/for/while contexts pin while mouse-scrolling too
-  { "nvim-treesitter/nvim-treesitter-context", opts = { mode = "topline" } },
+  -- so nested if/for/while contexts pin while mouse-scrolling too.
+  -- Merge-fragment on the community spec above (not a separate install);
+  -- `optional` = applies only while the astrocommunity import exists.
+  { "nvim-treesitter/nvim-treesitter-context", optional = true, opts = { mode = "topline" } },
   { import = "astrocommunity.diagnostics.trouble-nvim" }, -- problems panel (<Space>x*)
   { import = "astrocommunity.terminal-integration.vim-tmux-navigator" }, -- C-hjkl across nvim/tmux
   { import = "astrocommunity.test.neotest" }, -- pytest runner (<Space>T*), adapter from pack.python

@@ -35,5 +35,6 @@ return {
   { import = "astrocommunity.test.neotest" }, -- pytest runner (<Space>T*), adapter from pack.python
   { import = "astrocommunity.code-runner.overseer-nvim" }, -- task runner, reads .vscode/tasks.json (<Space>M*)
   { import = "astrocommunity.motion.nvim-surround" }, -- ys/cs/ds surround operators
+  { import = "astrocommunity.git.diffview-nvim" }, -- VS Code-style git tree: staged & unstaged diffs
   { import = "astrocommunity.utility.noice-nvim" },
 }

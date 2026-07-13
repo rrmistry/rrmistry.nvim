@@ -164,6 +164,13 @@ return {
       { ":GuessIndent", description = "Detect indentation from file" },
       { ":RenderMarkdown toggle", description = "Toggle markdown preview (in-editor)" },
       { ":Neotree position=current", description = "Open file tree full screen (in current window)" },
+      -- git diffs (diffview.nvim; panel has "Changes" = unstaged vs staged,
+      -- "Staged changes" = staged vs committed)
+      { ":DiffviewOpen", description = "Git changes: tree with unstaged & staged diffs (like VS Code)" },
+      { ":DiffviewOpen -- %", description = "Diff current file (unstaged & staged sections)" },
+      { ":DiffviewFileHistory %", description = "Git history of current file (diff per commit)" },
+      { ":DiffviewClose", description = "Close git diff view" },
+      { ":Gitsigns diffthis", description = "Quick diff: current file vs staged (in-window)" },
       { ":windo diffthis", description = "Compare visible splits (diff)" },
       { ":diffoff!", description = "Turn off diff view" },
       { ":Lazy sync", description = "Update plugins" },

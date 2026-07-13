@@ -169,6 +169,8 @@ return {
       { ":'<,'>t'<-1", description = "Copy selection up (duplicate above)" },
       { ":m+1", description = "Move line down (:m+2 for two lines, ...)" },
       { ":m-2", description = "Move line up (:m-3 for two lines, ...)" },
+      { ":'<,'>m'>+1", description = "Move selection down ('>+2 for two lines, ...)" },
+      { ":'<,'>m'<-2", description = "Move selection up ('<-3 for two lines, ...)" },
       { ":sort", description = "Sort lines ascending" },
       { ":sort u", description = "Sort lines & remove duplicates" },
       { ":setfiletype ", description = "Change language mode (set filetype)", unfinished = true },

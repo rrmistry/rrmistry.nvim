@@ -53,10 +53,10 @@ return {
       { "<C-w>L", description = "Move window to far right" },
       { "<C-w>J", description = "Move window to bottom" },
       { "<C-w>K", description = "Move window to top" },
-      { "<C-h>", description = "Go to left split" },
-      { "<C-j>", description = "Go to below split" },
-      { "<C-k>", description = "Go to above split" },
-      { "<C-l>", description = "Go to right split" },
+      { "<C-h>", description = "Go to left split / tmux pane" },
+      { "<C-j>", description = "Go to below split / tmux pane" },
+      { "<C-k>", description = "Go to above split / tmux pane" },
+      { "<C-l>", description = "Go to right split / tmux pane" },
       -- buffers, i.e. open files ("editors" in VS Code)
       { "<Leader>bc", description = "Close other files (keep current)" },
       { "<Leader>bC", description = "Close all files" },
@@ -81,6 +81,27 @@ return {
       { "[g", description = "Jump to previous git change in file" },
       { "]G", description = "Jump to last git change in file" },
       { "[G", description = "Jump to first git change in file" },
+      -- problems panel (trouble.nvim)
+      { "<Leader>xx", description = "Problems panel: current file diagnostics" },
+      { "<Leader>xX", description = "Problems panel: workspace diagnostics" },
+      { "<Leader>xt", description = "Problems panel: TODOs / FIXMEs" },
+      -- sticky scroll
+      { "<Leader>uT", description = "Toggle sticky scroll (pinned def/class context)" },
+      -- test runner (neotest)
+      { "<Leader>Tt", description = "Run test under cursor" },
+      { "<Leader>Tf", description = "Run all tests in file" },
+      { "<Leader>Tp", description = "Run all tests in project" },
+      { "<Leader>Td", description = "Debug test under cursor" },
+      { "<Leader>To", description = "Show test output" },
+      { "<Leader>T<CR>", description = "Toggle test summary sidebar" },
+      -- task runner (overseer)
+      { "<Leader>Mr", description = "Run task (reads .vscode/tasks.json)" },
+      { "<Leader>Mt", description = "Toggle task runner panel" },
+      -- surround (nvim-surround)
+      { 'ysiw"', description = "Wrap word in quotes (surround)" },
+      { "cs", description = 'Change surrounding quotes/brackets (e.g. cs"\')' },
+      { "ds", description = 'Delete surrounding quotes/brackets (e.g. ds")' },
+      { "S", description = 'Surround selection (then type " ( [ etc.)', mode = { "v" } },
       -- debugging (AstroNvim nvim-dap defaults; VS Code F-keys work too)
       { "<Leader>db", description = "Toggle breakpoint (F9)" },
       { "<Leader>dC", description = "Set conditional breakpoint" },

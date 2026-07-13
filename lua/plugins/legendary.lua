@@ -41,6 +41,8 @@ return {
       { "<C-^>", description = "Toggle between last two files (like Ctrl+Tab)" },
       { "<Leader>/", description = "Toggle comment", mode = { "n", "v" } },
       { "<Leader>lf", description = "Format document" },
+      { "<Leader>uf", description = "Toggle format-on-save (this file)" },
+      { "<Leader>uF", description = "Toggle format-on-save (all files)" },
       { "<Leader>la", description = "Code actions" },
       { "<Leader>lS", description = "Symbols outline (document symbols sidebar)" },
       { "<Leader>lr", description = "Rename symbol" },

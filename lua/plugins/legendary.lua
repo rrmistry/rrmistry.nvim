@@ -150,6 +150,12 @@ return {
     },
     commands = {
       { ":enew", description = "New file (empty buffer in current window)" },
+      -- line duplication & movement (built-in :t / :m; adjust the offset
+      -- for bigger jumps, e.g. :m+5 or :t-3)
+      { ":t.", description = "Copy line down (duplicate below)" },
+      { ":t-1", description = "Copy line up (duplicate above)" },
+      { ":m+1", description = "Move line down (:m+2 for two lines, ...)" },
+      { ":m-2", description = "Move line up (:m-3 for two lines, ...)" },
       { ":sort", description = "Sort lines ascending" },
       { ":sort u", description = "Sort lines & remove duplicates" },
       { ":setfiletype ", description = "Change language mode (set filetype)", unfinished = true },

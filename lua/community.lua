@@ -24,6 +24,9 @@ return {
   -- lazydocker terminal UI (<Space>td): containers, logs, exec, restart
   { import = "astrocommunity.docker.lazydocker" },
   -- editor upgrades (2026-07 survey picks)
+  -- conform: single formatting pipeline (community spec disables astrolsp/
+  -- none-ls formatting; formatters are declared in lua/plugins/mason.lua)
+  { import = "astrocommunity.editing-support.conform-nvim" },
   { import = "astrocommunity.editing-support.nvim-treesitter-context" }, -- sticky scroll
   -- VS Code-style stickiness: follow the top visible line (not the cursor),
   -- so nested if/for/while contexts pin while mouse-scrolling too.

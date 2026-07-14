@@ -1,0 +1,2 @@
+# machine-specific plugin specs (e.g. work-only LSP settings) — never committed
+lua/plugins/local-*.lua

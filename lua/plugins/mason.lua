@@ -12,6 +12,7 @@ return {
         -- install language servers
         "lua-language-server",
         "typos-lsp", -- spelling warnings in code/comments/identifiers, low noise
+        "cucumber-language-server", -- LSP for Gherkin *.feature files
 
         -- install formatters
         "stylua",
@@ -21,6 +22,23 @@ return {
 
         -- install any other package
         "tree-sitter-cli",
+      },
+    },
+  },
+  -- Configure conform.nvim (imported from astrocommunity). The community
+  -- spec routes ALL formatting through conform (astrolsp/none-ls formatting
+  -- disabled), so the formatters none-ls used to run are declared here.
+  {
+    "stevearc/conform.nvim",
+    optional = true,
+    opts = {
+      formatters_by_ft = {
+        -- ghokin is not in mason: go install github.com/antham/ghokin/v3/cmd/ghokin@latest
+        cucumber = { "ghokin" },
+        python = { "isort", "black" },
+        lua = { "stylua" },
+        sh = { "shfmt" },
+        bash = { "shfmt" },
       },
     },
   },

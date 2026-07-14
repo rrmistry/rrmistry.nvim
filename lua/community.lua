@@ -39,5 +39,11 @@ return {
   { import = "astrocommunity.code-runner.overseer-nvim" }, -- task runner, reads .vscode/tasks.json (<Space>M*)
   { import = "astrocommunity.motion.nvim-surround" }, -- ys/cs/ds surround operators
   { import = "astrocommunity.git.diffview-nvim" }, -- VS Code-style git tree: staged & unstaged diffs
+  -- extra lazy-load triggers so panel commands work before first DiffviewOpen
+  {
+    "sindrets/diffview.nvim",
+    optional = true,
+    cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewToggleFiles", "DiffviewFocusFiles", "DiffviewFileHistory" },
+  },
   { import = "astrocommunity.utility.noice-nvim" },
 }

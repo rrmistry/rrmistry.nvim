@@ -10,6 +10,20 @@ local function in_diffview()
   return ok and lib.get_current_view() ~= nil
 end
 
+-- run a diffview command, closing any open diffview first so only one
+-- diff tab ever exists (mirrors the sidebar gd behavior)
+local function single_diffview(cmd)
+  return function()
+    local ok, lib = pcall(require, "diffview.lib")
+    if ok then
+      for _, view in ipairs(vim.list_slice(lib.views)) do
+        view:close()
+      end
+    end
+    vim.cmd(cmd)
+  end
+end
+
 return {
   "mrjones2014/legendary.nvim",
   lazy = false,
@@ -235,10 +249,8 @@ return {
       { ":RenderMarkdown toggle", description = "Toggle markdown preview (in-editor)" },
       { ":Neotree position=current", description = "Open file tree full screen (in current window)" },
       -- git diffs (diffview.nvim; panel has "Changes" = unstaged vs staged,
-      -- "Staged changes" = staged vs committed)
-      { ":DiffviewOpen", description = "Git changes: tree with unstaged & staged diffs (like VS Code)" },
-      { ":DiffviewOpen -- %", description = "Diff current file (unstaged & staged sections)" },
-      { ":DiffviewFileHistory %", description = "Git history of current file (diff per commit)" },
+      -- "Staged changes" = staged vs committed). View-openers live in
+      -- `funcs` below so they reuse a single diff tab.
       { ":DiffviewToggleFiles", description = "Toggle git changes panel (staged & unstaged as separate trees)" },
       { ":DiffviewFocusFiles", description = "Focus git changes panel" },
       { ":Neotree git_status", description = "Sidebar: open Git tab (changed files tree)" },
@@ -267,6 +279,18 @@ return {
           end
         end,
         description = "Switch focus between file tree and editor",
+      },
+      {
+        single_diffview "DiffviewOpen",
+        description = "Git changes: tree with unstaged & staged diffs (like VS Code)",
+      },
+      {
+        single_diffview "DiffviewOpen -- %",
+        description = "Diff current file (unstaged & staged sections)",
+      },
+      {
+        single_diffview "DiffviewFileHistory %",
+        description = "Git history of current file (diff per commit)",
       },
     },
   },

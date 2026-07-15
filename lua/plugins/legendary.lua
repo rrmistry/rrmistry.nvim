@@ -81,6 +81,14 @@ return {
       { "<Leader>ft", description = "Change color theme" },
       { "<Leader>gg", description = "Open lazygit (pull, push, stash, branch, merge)" },
       { "<Leader>td", description = "Open lazydocker (containers, logs, exec, restart)" },
+      -- terminal
+      { "<F7>", description = "Toggle terminal" },
+      { "<Leader>tf", description = "Open terminal (floating)" },
+      { "<Leader>th", description = "Open terminal (horizontal split)" },
+      { "<Leader>tv", description = "Open terminal (vertical split)" },
+      -- meta-discovery: the long tail beyond this curated palette
+      { "<Leader>fC", description = "Run any command (fuzzy over ALL commands, even undescribed)" },
+      { "<Leader>fk", description = "Search every keybinding (all keymaps)" },
       { "<Leader>gl", description = "Git blame current line" },
       { "<Leader>gL", description = "Git blame current line (full)" },
       { "<Leader>gt", description = "Git status: pick from changed files" },
@@ -208,6 +216,7 @@ return {
     },
     commands = {
       { ":enew", description = "New file (empty buffer in current window)" },
+      { ":terminal", description = "Open terminal in current window (native)" },
       -- line duplication & movement (built-in :t / :m; adjust the offset
       -- for bigger jumps, e.g. :m+5 or :t-3)
       { ":t.", description = "Copy line down (duplicate below)" },

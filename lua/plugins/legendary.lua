@@ -257,10 +257,6 @@ return {
         end,
         description = "Switch focus between file tree and editor",
       },
-      {
-        function() require("dropbar.api").pick() end,
-        description = "Breadcrumbs: pick path/symbol to jump to (like clicking VS Code breadcrumbs)",
-      },
     },
   },
   keys = {

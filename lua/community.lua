@@ -5,9 +5,9 @@
 ---@type LazySpec
 return {
   "AstroNvim/astrocommunity",
-  -- VS Code-style breadcrumbs under the tabline: relative file path plus
-  -- symbol chain, clickable/pickable. Replaces AstroNvim's default winbar.
-  { import = "astrocommunity.bars-and-lines.dropbar-nvim" },
+  -- VS Code-style winbar: relative path, filename, symbol breadcrumbs —
+  -- the official AstroNvim docs recipe (recipes/status)
+  { import = "astrocommunity.recipes.heirline-vscode-winbar" },
   -- In-terminal markdown preview (renders in the buffer; works over SSH/tmux)
   { import = "astrocommunity.markdown-and-latex.render-markdown-nvim" },
   -- Project-wide search & replace panel (grug-far): <Space>ss workspace,

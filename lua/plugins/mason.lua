@@ -32,6 +32,13 @@ return {
     "stevearc/conform.nvim",
     optional = true,
     opts = {
+      -- conform's builtin ghokin definition omits stdin=false, so it formats
+      -- the LAST-SAVED file and clobbers unsaved buffer edits on every
+      -- format/save. stdin=false makes conform feed it a temp copy of the
+      -- buffer instead. (upstream bug in conform's ghokin spec)
+      formatters = {
+        ghokin = { stdin = false },
+      },
       formatters_by_ft = {
         -- ghokin is not in mason: go install github.com/antham/ghokin/v3/cmd/ghokin@latest
         cucumber = { "ghokin" },

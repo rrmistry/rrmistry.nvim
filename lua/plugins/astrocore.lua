@@ -8,6 +8,22 @@ return {
     filetypes = {
       filename = { Tiltfile = "starlark" },
     },
+    -- Shift + mouse wheel scrolls horizontally (VS Code behavior); by
+    -- default vim treats shifted wheel as page-scroll instead
+    mappings = {
+      n = {
+        ["<S-ScrollWheelUp>"] = { "<ScrollWheelLeft>", desc = "Scroll left" },
+        ["<S-ScrollWheelDown>"] = { "<ScrollWheelRight>", desc = "Scroll right" },
+      },
+      v = {
+        ["<S-ScrollWheelUp>"] = { "<ScrollWheelLeft>", desc = "Scroll left" },
+        ["<S-ScrollWheelDown>"] = { "<ScrollWheelRight>", desc = "Scroll right" },
+      },
+      i = {
+        ["<S-ScrollWheelUp>"] = { "<ScrollWheelLeft>", desc = "Scroll left" },
+        ["<S-ScrollWheelDown>"] = { "<ScrollWheelRight>", desc = "Scroll right" },
+      },
+    },
     options = {
       opt = {
         -- terminal window title: project root basename first, then the file

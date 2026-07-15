@@ -231,6 +231,7 @@ return {
     },
     commands = {
       { ":enew", description = "New file (empty buffer in current window)" },
+      { ":edit ", description = "Open file by exact path (paste relative or absolute)", unfinished = true },
       { ":terminal", description = "Open terminal in current window (native)" },
       -- line duplication & movement (built-in :t / :m; adjust the offset
       -- for bigger jumps, e.g. :m+5 or :t-3)

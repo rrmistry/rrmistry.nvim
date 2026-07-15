@@ -235,6 +235,8 @@ return {
       { ":Neotree buffers", description = "Sidebar: open Bufs tab (open files tree)" },
       { ":Neotree filesystem", description = "Sidebar: open File tab (file explorer)" },
       { ":DiffviewClose", description = "Close git diff view" },
+      { ":Neogit commit", description = "Git commit staged changes (opens commit editor)" },
+      { ":Neogit push", description = "Git push (popup: p/u = push to remote/upstream)" },
       { ":windo diffthis", description = "Compare visible splits (diff)" },
       { ":diffoff!", description = "Turn off diff view" },
       { ":Lazy sync", description = "Update plugins" },

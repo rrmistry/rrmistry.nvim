@@ -39,6 +39,9 @@ return {
   { import = "astrocommunity.code-runner.overseer-nvim" }, -- task runner, reads .vscode/tasks.json (<Space>M*)
   { import = "astrocommunity.motion.nvim-surround" }, -- ys/cs/ds surround operators
   { import = "astrocommunity.git.neogit" }, -- git dashboard: stage/unstage/discard/commit/amend (<Space>gn*)
+  -- Neogit maps <C-p> to PreviousSection in its status buffer, shadowing the
+  -- command palette; free it (section-jump stays on <C-n>, hunks on { / })
+  { "NeogitOrg/neogit", optional = true, opts = { mappings = { status = { ["<c-p>"] = false } } } },
   { import = "astrocommunity.git.diffview-nvim" }, -- VS Code-style git tree: staged & unstaged diffs
   -- extra lazy-load triggers so panel commands work before first DiffviewOpen
   {

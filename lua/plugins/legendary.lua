@@ -2,6 +2,14 @@
 -- Curated entries only (no auto-registration) to avoid duplicate cryptic items.
 -- Entries without an implementation are "anonymous": they only add a searchable
 -- label for an existing binding — nothing is rebound.
+
+-- true while any diffview tab is open (diff windows keep each file's own
+-- filetype, so entries for them need a context filter instead of `ft`)
+local function in_diffview()
+  local ok, lib = pcall(require, "diffview.lib")
+  return ok and lib.get_current_view() ~= nil
+end
+
 return {
   "mrjones2014/legendary.nvim",
   lazy = false,
@@ -186,8 +194,16 @@ return {
       { "U", description = "Unstage all files", filters = { ft = "DiffviewFiles" } },
       { "X", description = "Discard changes to file (restore committed state)", filters = { ft = "DiffviewFiles" } },
       { "<CR>", description = "Open diff for selected file", filters = { ft = "DiffviewFiles" } },
-      { "<Tab>", description = "Open diff for next file", filters = { ft = "DiffviewFiles" } },
+      { "<C-l>", description = "Focus the diff windows (right of panel)", filters = { ft = "DiffviewFiles" } },
       { "L", description = "Show commit log", filters = { ft = "DiffviewFiles" } },
+      -- diffview: focus & navigation (shown while a diffview tab is open;
+      -- the RIGHT diff window is the real working file — edit it, :w saves)
+      { "<Leader>e", description = "Git diff view: focus the file panel (sidebar)", filters = { in_diffview } },
+      { "<Tab>", description = "Git diff view: open next file's diff", filters = { in_diffview } },
+      { "<S-Tab>", description = "Git diff view: open previous file's diff", filters = { in_diffview } },
+      { "gf", description = "Git diff view: open file for normal editing (leave diff)", filters = { in_diffview } },
+      { "]c", description = "Jump to next change in diff", filters = { in_diffview } },
+      { "[c", description = "Jump to previous change in diff", filters = { in_diffview } },
       { "g?", description = "Show git panel help", filters = { ft = "DiffviewFiles" } },
     },
     commands = {

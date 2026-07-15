@@ -14,6 +14,12 @@ return {
       n = {
         ["<S-ScrollWheelUp>"] = { "<ScrollWheelLeft>", desc = "Scroll left" },
         ["<S-ScrollWheelDown>"] = { "<ScrollWheelRight>", desc = "Scroll right" },
+        -- navigate ALL hunks differing from the last commit, staged or not
+        -- (gitsigns' default target='unstaged' goes quiet once a file is staged)
+        ["]g"] = { function() require("gitsigns").nav_hunk("next", { target = "all" }) end, desc = "Next Git hunk" },
+        ["[g"] = { function() require("gitsigns").nav_hunk("prev", { target = "all" }) end, desc = "Previous Git hunk" },
+        ["]G"] = { function() require("gitsigns").nav_hunk("last", { target = "all" }) end, desc = "Last Git hunk" },
+        ["[G"] = { function() require("gitsigns").nav_hunk("first", { target = "all" }) end, desc = "First Git hunk" },
       },
       v = {
         ["<S-ScrollWheelUp>"] = { "<ScrollWheelLeft>", desc = "Scroll left" },

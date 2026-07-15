@@ -156,6 +156,12 @@ return {
       { ",b", description = "Abort running search/replace", filters = { ft = "grug-far" } },
       { ",c", description = "Close search & replace panel", filters = { ft = "grug-far" } },
       { "g?", description = "Show panel help", filters = { ft = "grug-far" } },
+      -- neo-tree sidebar actions (only shown while the sidebar is focused)
+      { "]b", description = "Sidebar: next tab (File → Bufs → Git)", filters = { ft = "neo-tree" } },
+      { "[b", description = "Sidebar: previous tab (Git → Bufs → File)", filters = { ft = "neo-tree" } },
+      { "l", description = "Open file / expand folder", filters = { ft = "neo-tree" } },
+      { "h", description = "Collapse folder / go to parent", filters = { ft = "neo-tree" } },
+      { "?", description = "Show sidebar help (all tree actions)", filters = { ft = "neo-tree" } },
       -- diffview file panel actions (only shown while the git panel is focused)
       { "s", description = "Stage / unstage file under cursor", filters = { ft = "DiffviewFiles" } },
       { "S", description = "Stage all files", filters = { ft = "DiffviewFiles" } },
@@ -191,7 +197,9 @@ return {
       { ":DiffviewFileHistory %", description = "Git history of current file (diff per commit)" },
       { ":DiffviewToggleFiles", description = "Toggle git changes panel (staged & unstaged as separate trees)" },
       { ":DiffviewFocusFiles", description = "Focus git changes panel" },
-      { ":Neotree git_status", description = "File explorer filtered to git changes" },
+      { ":Neotree git_status", description = "Sidebar: open Git tab (changed files tree)" },
+      { ":Neotree buffers", description = "Sidebar: open Bufs tab (open files tree)" },
+      { ":Neotree filesystem", description = "Sidebar: open File tab (file explorer)" },
       { ":DiffviewClose", description = "Close git diff view" },
       { ":windo diffthis", description = "Compare visible splits (diff)" },
       { ":diffoff!", description = "Turn off diff view" },

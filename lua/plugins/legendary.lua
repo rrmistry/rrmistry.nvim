@@ -109,7 +109,7 @@ return {
       { "<Leader>gb", description = "Git branches: pick / switch" },
       { "<Leader>gc", description = "Git commit log (repository)" },
       { "<Leader>gC", description = "Git commit log (current file)" },
-      { "<Leader>go", description = "Open file in browser on git host (GitHub)" },
+      { "<Leader>go", description = "Git browse: open current commit on remote" },
       { "<Leader>gnt", description = "Open Neogit: git dashboard (stage, discard, commit, amend)" },
       { "<Leader>gnc", description = "Neogit commit page (from there: a = amend last commit)" },
       { "<Leader>gd", "<Cmd>Gitsigns diffthis<CR>", description = "Git diff current file (side-by-side split)" },
@@ -292,6 +292,14 @@ return {
       {
         single_diffview "DiffviewFileHistory %",
         description = "Git history of current file (diff per commit)",
+      },
+      {
+        function() require("snacks").gitbrowse { what = "branch" } end,
+        description = "Git: open repo on remote (current branch, in browser)",
+      },
+      {
+        function() require("snacks").gitbrowse { what = "file" } end,
+        description = "Git: open file on remote (current branch & line, in browser)",
       },
     },
   },

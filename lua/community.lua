@@ -23,6 +23,10 @@ return {
   { import = "astrocommunity.pack.bash" },
   -- lazydocker terminal UI (<Space>td): containers, logs, exec, restart
   { import = "astrocommunity.docker.lazydocker" },
+  -- AI: Copilot completions inside blink.cmp, plus sidekick for Copilot
+  -- next-edit suggestions and the Claude Code CLI terminal (<Space>A*)
+  { import = "astrocommunity.completion.blink-copilot" },
+  { import = "astrocommunity.ai.sidekick-nvim" },
   -- editor upgrades (2026-07 survey picks)
   -- conform: single formatting pipeline (community spec disables astrolsp/
   -- none-ls formatting; formatters are declared in lua/plugins/mason.lua)

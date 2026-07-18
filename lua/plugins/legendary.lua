@@ -100,6 +100,14 @@ return {
       { "<Leader>tf", description = "Open terminal (floating)" },
       { "<Leader>th", description = "Open terminal (horizontal split)" },
       { "<Leader>tv", description = "Open terminal (vertical split)" },
+      -- AI: sidekick (Claude Code CLI + Copilot next-edit) and Copilot
+      { "<Leader>Aa", description = "AI: toggle Claude Code terminal (sidekick CLI)" },
+      { "<Leader>As", description = "AI: select CLI tool (claude, ...)" },
+      { "<Leader>At", description = "AI: send current line/selection to the CLI", mode = { "n", "v" } },
+      { "<Leader>Af", description = "AI: send current file to the CLI" },
+      { "<Leader>Ap", description = "AI: pick a prompt to send", mode = { "n", "v" } },
+      { "<Leader>Ant", description = "AI: toggle Copilot next-edit suggestions (NES)" },
+      { "<Tab>", description = "AI: go to / apply next edit suggestion (when shown)" },
       -- meta-discovery: the long tail beyond this curated palette
       { "<Leader>fC", description = "Run any command (fuzzy over ALL commands, even undescribed)" },
       { "<Leader>fk", description = "Search every keybinding (all keymaps)" },
@@ -267,6 +275,8 @@ return {
       { ":Mason", description = "Manage language tools (LSP, formatters, linters)" },
       { ":GrugFar", description = "Find & replace across project" },
       { ":checkhealth", description = "Diagnose Neovim health" },
+      { ":Copilot auth", description = "Copilot: sign in with GitHub (one-time)" },
+      { ":Copilot status", description = "Copilot: connection status" },
     },
     funcs = {
       -- real function, not fed keystrokes: works from inside the neo-tree
@@ -300,6 +310,18 @@ return {
       {
         function() require("snacks").gitbrowse { what = "file" } end,
         description = "Git: open file on remote (current branch & line, in browser)",
+      },
+      {
+        function()
+          if vim.o.mouse == "" then
+            vim.o.mouse = "nvi"
+            vim.notify "Mouse enabled"
+          else
+            vim.o.mouse = ""
+            vim.notify "Mouse disabled (terminal-native selection)"
+          end
+        end,
+        description = "Toggle mouse support on / off",
       },
     },
   },

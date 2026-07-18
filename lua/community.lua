@@ -15,9 +15,17 @@ return {
   { import = "astrocommunity.search.grug-far-nvim" },
   -- Language packs: LSP + treesitter + formatters auto-install via Mason on
   -- first launch, so a fresh `git clone` needs no hand-installed servers.
-  { import = "astrocommunity.pack.python" }, -- basedpyright, black, isort, debugpy
+  -- python: selective subpack imports (the README-documented pattern).
+  -- Importing "pack.python" whole would drag in ALL variants (ruff, pyrefly,
+  -- ty) via lazy's directory import, stacking type checkers and overriding
+  -- black with ruff_format.
+  { import = "astrocommunity.pack.python.base" },
+  { import = "astrocommunity.pack.python.basedpyright" },
+  { import = "astrocommunity.pack.python.black" },
+  { import = "astrocommunity.pack.python.isort" },
   { import = "astrocommunity.pack.typescript" }, -- vtsls (VS Code's TS server), prettier
   { import = "astrocommunity.pack.astro" }, -- Astro.js: astro-language-server + parser
+  { import = "astrocommunity.pack.lua" }, -- lua_ls, stylua, lazydev (this config!)
   { import = "astrocommunity.pack.toml" },
   { import = "astrocommunity.pack.docker" }, -- Dockerfile + docker-compose LSPs
   { import = "astrocommunity.pack.bash" },

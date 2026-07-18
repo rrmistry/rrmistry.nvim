@@ -8,20 +8,13 @@ return {
     -- overrides `require("mason-tool-installer").setup(...)`
     opts = {
       -- Make sure to use the names found in `:Mason`
+      -- language-specific tools come from the packs in community.lua;
+      -- only cross-cutting tools are ensured here
       ensure_installed = {
-        -- install language servers
-        "lua-language-server",
         "typos-lsp", -- spelling warnings in code/comments/identifiers, low noise
-        "cucumber-language-server", -- LSP for Gherkin *.feature files
-
-        -- install formatters
-        "stylua",
-
-        -- install debuggers
-        "debugpy",
-
-        -- install any other package
-        "tree-sitter-cli",
+        "cucumber-language-server", -- LSP for Gherkin *.feature files (no pack exists)
+        "debugpy", -- python debug adapter (pack.python does not ensure it)
+        "tree-sitter-cli", -- lets treesitter auto_install compile new parsers
       },
     },
   },
@@ -39,13 +32,11 @@ return {
       formatters = {
         ghokin = { args = { "fmt", "stdout" } },
       },
+      -- python/lua/sh formatters are declared by their packs (optional
+      -- conform specs); only gherkin has no pack and lives here.
       formatters_by_ft = {
         -- ghokin is not in mason: go install github.com/antham/ghokin/v3/cmd/ghokin@latest
         cucumber = { "ghokin" },
-        python = { "isort", "black" },
-        lua = { "stylua" },
-        sh = { "shfmt" },
-        bash = { "shfmt" },
       },
     },
   },

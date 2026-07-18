@@ -20,6 +20,11 @@ return {
         ["[g"] = { function() require("gitsigns").nav_hunk("prev", { target = "all" }) end, desc = "Previous Git hunk" },
         ["]G"] = { function() require("gitsigns").nav_hunk("last", { target = "all" }) end, desc = "Last Git hunk" },
         ["[G"] = { function() require("gitsigns").nav_hunk("first", { target = "all" }) end, desc = "First Git hunk" },
+        -- Claude Code is the default sidekick CLI (<Leader>As still selects others)
+        ["<Leader>Aa"] = {
+          function() require("sidekick.cli").toggle { name = "claude", focus = true } end,
+          desc = "Sidekick Toggle CLI (Claude)",
+        },
       },
       v = {
         ["<S-ScrollWheelUp>"] = { "<ScrollWheelLeft>", desc = "Scroll left" },

@@ -107,6 +107,9 @@ return {
       { "<Leader>Af", description = "AI: send current file to the CLI" },
       { "<Leader>Ap", description = "AI: pick a prompt to send", mode = { "n", "v" } },
       { "<Leader>Ant", description = "AI: toggle Copilot next-edit suggestions (NES)" },
+      { "<Leader>Anu", description = "AI: refresh next-edit suggestions" },
+      { "<Leader>Ad", description = "AI: detach CLI session (keeps running in background)" },
+      { "<C-.>", description = "AI: quick toggle CLI terminal (also while typing)" },
       { "<Tab>", description = "AI: go to / apply next edit suggestion (when shown)" },
       -- meta-discovery: the long tail beyond this curated palette
       { "<Leader>fC", description = "Run any command (fuzzy over ALL commands, even undescribed)" },
@@ -277,6 +280,8 @@ return {
       { ":checkhealth", description = "Diagnose Neovim health" },
       { ":Copilot auth", description = "Copilot: sign in with GitHub (one-time)" },
       { ":Copilot status", description = "Copilot: connection status" },
+      { ":Copilot disable", description = "Copilot: pause completions" },
+      { ":Copilot enable", description = "Copilot: resume completions" },
     },
     funcs = {
       -- real function, not fed keystrokes: works from inside the neo-tree

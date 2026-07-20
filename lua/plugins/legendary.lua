@@ -67,6 +67,10 @@ return {
       { "<Leader>uF", description = "Toggle format-on-save (all files)" },
       { "<Leader>la", description = "Code actions" },
       { "<Leader>lS", description = "Symbols outline (document symbols sidebar)" },
+      { "<Leader>ls", description = "Go to symbol in file (VS Code @)" },
+      { "<Leader>f'", description = "Browse bookmarks (marks) with preview" },
+      { "m", description = "Set bookmark on line (press m then a letter, e.g. ma)" },
+      { "'", description = "Jump to bookmark (press ' then the letter)" },
       { "<Leader>lr", description = "Rename symbol" },
       { "gd", description = "Go to definition" },
       { "K", description = "Show hover docs" },
@@ -270,6 +274,7 @@ return {
     commands = {
       { ":enew", description = "New file (empty buffer in current window)" },
       { ":edit ", description = "Open file by exact path (paste relative or absolute)", unfinished = true },
+      { ":", description = "Go to line: type the number and Enter (VS Code :42)", unfinished = true },
       { ":terminal", description = "Open terminal in current window (native)" },
       -- line duplication & movement (built-in :t / :m; adjust the offset
       -- for bigger jumps, e.g. :m+5 or :t-3)
@@ -346,6 +351,14 @@ return {
       {
         function() require("snacks").gitbrowse { what = "file" } end,
         description = "Git: open file on remote (current branch & line, in browser)",
+      },
+      {
+        function() require("snacks").picker.lsp_workspace_symbols() end,
+        description = "Go to symbol in workspace (VS Code #)",
+      },
+      {
+        function() require("snacks").picker() end,
+        description = "Open any picker (files, symbols, grep, undo, marks, ...)",
       },
       {
         function()

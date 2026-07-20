@@ -122,7 +122,7 @@ return {
       { "<Leader>th", description = "Open terminal (horizontal split)" },
       { "<Leader>tv", description = "Open terminal (vertical split)" },
       -- AI: sidekick (Claude Code CLI + Copilot next-edit) and Copilot
-      { "<Leader>Aa", description = "AI: toggle Claude Code terminal (sidekick CLI)" },
+      { "<Leader>Aa", description = "AI: toggle agent CLI terminal (current default provider)" },
       { "<Leader>As", description = "AI: select CLI tool (claude, ...)" },
       { "<Leader>At", description = "AI: send current line/selection to the CLI", mode = { "n", "v" } },
       { "<Leader>Af", description = "AI: send current file to the CLI" },
@@ -346,6 +346,22 @@ return {
       {
         function() require("snacks").gitbrowse { what = "file" } end,
         description = "Git: open file on remote (current branch & line, in browser)",
+      },
+      {
+        function()
+          local tools = {}
+          for name in pairs(require("sidekick.config").cli.tools or {}) do
+            table.insert(tools, name)
+          end
+          table.sort(tools)
+          vim.ui.select(tools, { prompt = "Default agent CLI provider:" }, function(choice)
+            if choice then
+              vim.g.ai_cli = choice
+              vim.notify("Default agent CLI: " .. choice .. " (this session)")
+            end
+          end)
+        end,
+        description = "AI: choose default CLI provider (claude, gemini, opencode, ...)",
       },
       {
         function()

@@ -42,6 +42,10 @@ return {
         -- path — "myproject • src/main.py [+]" (cwd tracks the project root
         -- via the rooter below)
         titlestring = "%{fnamemodify(getcwd(), ':t')} • %f %m",
+        -- soft wrap on by default (AstroNvim ships wrap=false); linebreak
+        -- wraps at word boundaries like VS Code
+        wrap = true,
+        linebreak = true,
       },
     },
     -- Keep the working directory on the project root (VS Code-workspace-like):

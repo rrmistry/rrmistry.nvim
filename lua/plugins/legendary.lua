@@ -130,6 +130,7 @@ return {
       { "d0", description = "Delete to start of line" },
       { "<Leader>uZ", description = "Toggle zen mode" },
       { "<Leader>us", description = "Toggle spell checking (dictionary-based)" },
+      { "<Leader>uw", description = "Toggle soft wrap (this window only)" },
       { "<Leader>ft", description = "Change color theme" },
       { "<Leader>gg", description = "Open lazygit (pull, push, stash, branch, merge)" },
       { "<Leader>td", description = "Open lazydocker (containers, logs, exec, restart)" },
@@ -390,6 +391,17 @@ return {
           end)
         end,
         description = "AI: choose default CLI provider (claude, gemini, opencode, ...)",
+      },
+      {
+        function()
+          local new = not vim.o.wrap
+          vim.o.wrap = new
+          for _, win in ipairs(vim.api.nvim_list_wins()) do
+            vim.wo[win].wrap = new
+          end
+          vim.notify("Soft wrap " .. (new and "enabled" or "disabled") .. " globally (this session)")
+        end,
+        description = "Toggle soft wrap globally (all windows + new buffers)",
       },
       {
         function()

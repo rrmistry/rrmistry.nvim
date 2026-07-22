@@ -14,6 +14,8 @@ return {
       n = {
         ["<S-ScrollWheelUp>"] = { "<ScrollWheelLeft>", desc = "Scroll left" },
         ["<S-ScrollWheelDown>"] = { "<ScrollWheelRight>", desc = "Scroll right" },
+        ["<Down>"] = { "gj", desc = "Move down (visual line)" },
+        ["<Up>"] = { "gk", desc = "Move up (visual line)" },
         -- navigate ALL hunks differing from the last commit, staged or not
         -- (gitsigns' default target='unstaged' goes quiet once a file is staged)
         ["]g"] = { function() require("gitsigns").nav_hunk("next", { target = "all" }) end, desc = "Next Git hunk" },
@@ -31,9 +33,17 @@ return {
         ["<S-ScrollWheelUp>"] = { "<ScrollWheelLeft>", desc = "Scroll left" },
         ["<S-ScrollWheelDown>"] = { "<ScrollWheelRight>", desc = "Scroll right" },
       },
+      -- arrows move by visual line through soft-wrapped text (VS Code style);
+      -- j/k keep vim's physical-line semantics
+      x = {
+        ["<Down>"] = { "gj", desc = "Move down (visual line)" },
+        ["<Up>"] = { "gk", desc = "Move up (visual line)" },
+      },
       i = {
         ["<S-ScrollWheelUp>"] = { "<ScrollWheelLeft>", desc = "Scroll left" },
         ["<S-ScrollWheelDown>"] = { "<ScrollWheelRight>", desc = "Scroll right" },
+        ["<Down>"] = { "<C-o>gj", desc = "Move down (visual line)" },
+        ["<Up>"] = { "<C-o>gk", desc = "Move up (visual line)" },
       },
     },
     options = {

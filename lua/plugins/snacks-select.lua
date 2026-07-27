@@ -13,6 +13,8 @@ return {
           -- "tab" learns to surface the buffer entries you actually use
           -- above built-in tab-page commands
           matcher = { frecency = true },
+          -- wide, VS Code-command-palette-like window
+          layout = { preset = "select", layout = { width = 0.85, min_width = 100 } },
         },
       },
     },

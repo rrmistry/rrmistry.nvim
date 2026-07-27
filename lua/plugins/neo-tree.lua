@@ -1,6 +1,8 @@
--- Sidebar git extras. Everything else is already built into neo-tree's
--- git_status source: ga/gu/gr stage/unstage/discard work on FILE AND
--- FOLDER nodes (git pathspec), A stages all, gc commits, gp pushes.
+-- Sidebar git extras. Neo-tree's built-ins already cover the rest:
+-- ga/gu/gr stage/unstage/discard work on FILE AND FOLDER nodes (git
+-- pathspec), A stages all, gc commits, gp pushes. Enter/double-click
+-- keep the default open behavior; for diffs use gd (diffview tree) or
+-- the palette's "Toggle inline diff view" on the opened buffer.
 return {
   "nvim-neo-tree/neo-tree.nvim",
   optional = true,
@@ -22,6 +24,11 @@ return {
     window = {
       mappings = {
         ["gd"] = "diffview_node",
+        -- AstroNvim's ["<Space>"] = false no longer disables neo-tree's
+        -- default <space>=toggle_node (current neo-tree needs "none" on the
+        -- lowercase key). Without this, Space in the sidebar folds folders
+        -- instead of acting as the leader key (<Space>ff etc.).
+        ["<space>"] = "none",
       },
     },
   },

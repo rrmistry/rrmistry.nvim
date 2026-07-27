@@ -10,6 +10,13 @@ local function in_diffview()
   return ok and lib.get_current_view() ~= nil
 end
 
+-- true in ANY diff context: native vim diff windows (:Gitsigns diffthis,
+-- :windo diffthis) as well as diffview tabs
+local function in_diff_mode()
+  if vim.wo.diff then return true end
+  return in_diffview()
+end
+
 -- run a diffview command, closing any open diffview first so only one
 -- diff tab ever exists (mirrors the sidebar gd behavior)
 local function single_diffview(cmd)
@@ -29,6 +36,18 @@ return {
   lazy = false,
   priority = 10000,
   opts = {
+    -- VS Code-style rows: plain-English description first and dominant,
+    -- the key/command as a subtle right-side hint
+    default_item_formatter = function(item)
+      local Toolbox = require "legendary.toolbox"
+      local bind = ""
+      if Toolbox.is_keymap(item) then
+        bind = item.keys
+      elseif Toolbox.is_command(item) then
+        bind = item.cmd
+      end
+      return { item.description or "", bind }
+    end,
     keymaps = {
       -- core vim, in VS Code vocabulary
       { "y", description = "Copy selection to clipboard", mode = { "v" } },
@@ -160,8 +179,6 @@ return {
       { "<Leader>gc", description = "Git commit log (repository)" },
       { "<Leader>gC", description = "Git commit log (current file)" },
       { "<Leader>go", description = "Git browse: open current commit on remote" },
-      { "<Leader>gnt", description = "Open Neogit: git dashboard (stage, discard, commit, amend)" },
-      { "<Leader>gnc", description = "Neogit commit page (from there: a = amend last commit)" },
       { "<Leader>gd", "<Cmd>Gitsigns diffthis<CR>", description = "Git diff current file (side-by-side split)" },
       { "<Leader>gD", function() require("gitsigns").diffthis "~1" end, description = "Git diff current file against previous commit" },
       { "<Leader>gs", description = "Stage / unstage git change (hunk)", mode = { "n", "v" } },
@@ -253,14 +270,6 @@ return {
       { "A", description = "Git tab: stage all files", filters = { ft = "neo-tree" } },
       { "gc", description = "Git tab: commit staged changes", filters = { ft = "neo-tree" } },
       { "gU", description = "Git tab: undo last commit (keep changes)", filters = { ft = "neo-tree" } },
-      -- Neogit status buffer actions
-      { "s", description = "Stage file / hunk under cursor", filters = { ft = "NeogitStatus" } },
-      { "u", description = "Unstage file / hunk under cursor", filters = { ft = "NeogitStatus" } },
-      { "x", description = "Discard change under cursor (file or hunk)", filters = { ft = "NeogitStatus" } },
-      { "cc", description = "Commit staged changes", filters = { ft = "NeogitStatus" } },
-      { "ca", description = "Amend last commit", filters = { ft = "NeogitStatus" } },
-      { "<Tab>", description = "Expand / collapse diff under cursor", filters = { ft = "NeogitStatus" } },
-      { "?", description = "Show all Neogit keys (help)", filters = { ft = "NeogitStatus" } },
       -- neo-tree sidebar actions (only shown while the sidebar is focused)
       { "]b", description = "Sidebar: next tab (File → Bufs → Git)", filters = { ft = "neo-tree" } },
       { "[b", description = "Sidebar: previous tab (Git → Bufs → File)", filters = { ft = "neo-tree" } },
@@ -281,8 +290,21 @@ return {
       { "<Tab>", description = "Git diff view: open next file's diff", filters = { in_diffview } },
       { "<S-Tab>", description = "Git diff view: open previous file's diff", filters = { in_diffview } },
       { "gf", description = "Git diff view: open file for normal editing (leave diff)", filters = { in_diffview } },
-      { "]c", description = "Jump to next change in diff", filters = { in_diffview } },
-      { "[c", description = "Jump to previous change in diff", filters = { in_diffview } },
+      { "]c", description = "Jump to next change in diff", filters = { in_diff_mode } },
+      { "[c", description = "Jump to previous change in diff", filters = { in_diff_mode } },
+      { ":syncbind", description = "Re-sync side-by-side diff scrolling (after it drifts)" },
+      { "do", description = "Take change from the other side (diff obtain)", filters = { in_diff_mode } },
+      { "dp", description = "Push change to the other side (diff put)", filters = { in_diff_mode } },
+      { "g<C-x>", description = "Cycle diff layout (side-by-side ↔ stacked)", filters = { in_diffview } },
+      -- merge conflict resolution (diffview merge tool; acts on the
+      -- conflict under the cursor, one at a time)
+      { "]x", description = "Next merge conflict", filters = { in_diffview } },
+      { "[x", description = "Previous merge conflict", filters = { in_diffview } },
+      { "<Leader>co", description = "Conflict: accept current change (ours)", filters = { in_diffview } },
+      { "<Leader>ct", description = "Conflict: accept incoming change (theirs)", filters = { in_diffview } },
+      { "<Leader>cb", description = "Conflict: accept base version", filters = { in_diffview } },
+      { "<Leader>ca", description = "Conflict: accept both changes", filters = { in_diffview } },
+      { "dx", description = "Conflict: reject both (delete conflict region)", filters = { in_diffview } },
       { "g?", description = "Show git panel help", filters = { ft = "DiffviewFiles" } },
     },
     commands = {
@@ -310,14 +332,19 @@ return {
       -- "Staged changes" = staged vs committed). View-openers live in
       -- `funcs` below so they reuse a single diff tab.
       { ":DiffviewToggleFiles", description = "Toggle git changes panel (staged & unstaged as separate trees)" },
+      { ":DiffviewOpen ", description = "Compare git refs in tree view: main..feature, HEAD~3, a tag, ...", unfinished = true },
+      { ":CodeDiff", description = "VS Code-style diff explorer of all changes (t = inline/split, - = stage, q = quit)" },
+      { ":CodeDiff ", description = "VS Code-style diff vs a ref (e.g. main, HEAD~5, a commit)", unfinished = true },
+      { ":DiffviewFileHistory ", description = "Git history of a path or ref range (e.g. src/ or main..feature)", unfinished = true },
       { ":DiffviewFocusFiles", description = "Focus git changes panel" },
       { ":Neotree git_status", description = "Sidebar: open Git tab (changed files tree)" },
       { ":Neotree buffers", description = "Sidebar: open Bufs tab (open files tree)" },
       { ":Neotree filesystem", description = "Sidebar: open File tab (file explorer)" },
       { ":DiffviewClose", description = "Close git diff view" },
-      { ":Neogit commit", description = "Git commit staged changes (opens commit editor)" },
-      { ":Neogit push", description = "Git push (popup: p/u = push to remote/upstream)" },
-      { ":Neogit pull", description = "Git pull (popup: p/u = pull from remote/upstream)" },
+      { ':!git commit -m "', description = "Commit staged changes: type message and closing quote", unfinished = true },
+      { ":!git commit --amend --no-edit", description = "Amend last commit (keep message)" },
+      { ":!git push", description = "Git push to upstream" },
+      { ":!git pull", description = "Git pull from upstream" },
       { ":windo diffthis", description = "Compare visible splits (diff)" },
       { ":registers", description = "Show contents of all registers" },
       { ":delmarks!", description = "Delete all bookmarks in this file (a-z)" },
@@ -359,6 +386,19 @@ return {
       {
         single_diffview "DiffviewFileHistory %",
         description = "Git history of current file (diff per commit)",
+      },
+      {
+        function()
+          local md = require "mini.diff"
+          local buf = vim.api.nvim_get_current_buf()
+          if not md.get_buf_data(buf) then pcall(md.enable, buf) end
+          if not md.get_buf_data(buf) then
+            vim.notify("No committed version to diff against", vim.log.levels.INFO)
+            return
+          end
+          md.toggle_overlay(buf)
+        end,
+        description = "Toggle inline diff view in this buffer (overlay)",
       },
       {
         function() require("snacks").gitbrowse { what = "branch" } end,

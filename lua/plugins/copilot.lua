@@ -4,33 +4,50 @@
 -- todo lists, legacy VCS commit buffers (hg/svn/cvs), no-filetype
 -- buffers, and grug-far panels (denied by its community spec).
 return {
-  "zbirenbaum/copilot.lua",
-  optional = true, -- merge-fragment: applies only via the community import
-  opts = {
-    -- never attach to secrets-bearing files: buffer content is never sent
-    -- to GitHub for these. Replaces the default should_attach, so the
-    -- buflisted/buftype checks are reproduced here.
-    should_attach = function(bufnr, bufname)
-      if not vim.bo[bufnr].buflisted or vim.bo[bufnr].buftype ~= "" then return false end
-      local name = vim.fs.basename(bufname):lower()
-      if
-        name:match "^%.env" -- .env, .env.local, .env.production, ...
-        or name:match "%.pem$"
-        or name:match "%.key$"
-        or name:match "^id_%w+$" -- ssh private keys (id_rsa, id_ed25519)
-        -- ponytail: contains-matches may over-block (e.g. secrets_test.py);
-        -- loosen here if a legitimate file gets denied
-        or name:match "credential"
-        or name:match "secret"
-      then
-        return false
-      end
-      return true
-    end,
-    filetypes = {
-      markdown = true,
-      yaml = true, -- docker-compose etc.
-      gitcommit = true,
+  {
+    "zbirenbaum/copilot.lua",
+    optional = true, -- merge-fragment: applies only via the community import
+    opts = {
+      -- never attach to secrets-bearing files: buffer content is never sent
+      -- to GitHub for these. Replaces the default should_attach, so the
+      -- buflisted/buftype checks are reproduced here.
+      should_attach = function(bufnr, bufname)
+        if not vim.bo[bufnr].buflisted or vim.bo[bufnr].buftype ~= "" then return false end
+        local name = vim.fs.basename(bufname):lower()
+        if
+          name:match "^%.env" -- .env, .env.local, .env.production, ...
+          or name:match "%.pem$"
+          or name:match "%.key$"
+          or name:match "^id_%w+$" -- ssh private keys (id_rsa, id_ed25519)
+          -- ponytail: contains-matches may over-block (e.g. secrets_test.py);
+          -- loosen here if a legitimate file gets denied
+          or name:match "credential"
+          or name:match "secret"
+        then
+          return false
+        end
+        return true
+      end,
+      filetypes = {
+        markdown = true,
+        yaml = true, -- docker-compose etc.
+        gitcommit = true,
+      },
+    },
+  },
+  {
+    -- no AI completions while reviewing diffs: hide the copilot source in
+    -- any window that is in diff mode (LSP/path/buffer completion stays)
+    "saghen/blink.cmp",
+    optional = true,
+    opts = {
+      sources = {
+        providers = {
+          copilot = {
+            enabled = function() return not vim.wo.diff end,
+          },
+        },
+      },
     },
   },
 }

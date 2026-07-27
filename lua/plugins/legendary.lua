@@ -464,4 +464,31 @@ return {
     { "<C-p>", "<Cmd>Legendary<CR>", desc = "Command palette", mode = { "n", "v" } },
     { "<C-S-p>", "<Cmd>Legendary<CR>", desc = "Command palette", mode = { "n", "v" } },
   },
+  config = function(_, opts)
+    require("legendary").setup(opts)
+    -- Harvest the entire <Leader> tree (every described mapping, any depth)
+    -- into the palette as anonymous entries, so nothing bound under the
+    -- leader is ever undiscoverable. Runs after startup so astrocore and
+    -- plugin mappings all exist. Curated entries above stay as the
+    -- plain-English layer; harvested ones add the stock vocabulary.
+    vim.api.nvim_create_autocmd("User", {
+      pattern = "VeryLazy",
+      once = true,
+      callback = function()
+        vim.defer_fn(function()
+          local leader = vim.g.mapleader or " "
+          local items = {}
+          for _, mode in ipairs { "n", "v" } do
+            for _, m in ipairs(vim.api.nvim_get_keymap(mode)) do
+              if m.desc and m.desc ~= "" and vim.startswith(m.lhs, leader) and #m.lhs > #leader then
+                local lhs = "<Leader>" .. m.lhs:sub(#leader + 1)
+                table.insert(items, { lhs, description = m.desc, mode = { mode } })
+              end
+            end
+          end
+          require("legendary").keymaps(items)
+        end, 500)
+      end,
+    })
+  end,
 }

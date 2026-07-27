@@ -24,10 +24,12 @@ return {
     window = {
       mappings = {
         ["gd"] = "diffview_node",
-        -- AstroNvim's ["<Space>"] = false no longer disables neo-tree's
-        -- default <space>=toggle_node (current neo-tree needs "none" on the
-        -- lowercase key). Without this, Space in the sidebar folds folders
-        -- instead of acting as the leader key (<Space>ff etc.).
+        -- Upstream neo-tree bug (setup/init.lua: vim.tbl_get called with a
+        -- list instead of varargs, so key normalization no-ops): AstroNvim's
+        -- ["<Space>"] = false never merges over the default lowercase
+        -- <space>=toggle_node. Disable it on the exact default key so Space
+        -- acts as the leader in the sidebar (<Space>ff etc.).
+        -- Remove once fixed upstream (introduced in neo-tree PR #1788).
         ["<space>"] = "none",
       },
     },

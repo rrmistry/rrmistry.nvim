@@ -461,8 +461,20 @@ return {
     -- Both bound: Ctrl+Shift+P for VS Code muscle memory (needs extended-keys
     -- support end to end), plain Ctrl+P for keyboards without Shift chords
     -- (e.g. Termux) and terminals that collapse C-S-p into C-p anyway.
-    { "<C-p>", "<Cmd>Legendary<CR>", desc = "Command palette", mode = { "n", "v" } },
-    { "<C-S-p>", "<Cmd>Legendary<CR>", desc = "Command palette", mode = { "n", "v" } },
+    -- Opening first harvests this buffer's LOCAL leader mappings (LSP and
+    -- panel buffers carry their own), scoped to this buffer via filter.
+    {
+      "<C-p>",
+      function() require("user_legendary_palette").open() end,
+      desc = "Command palette",
+      mode = { "n", "v" },
+    },
+    {
+      "<C-S-p>",
+      function() require("user_legendary_palette").open() end,
+      desc = "Command palette",
+      mode = { "n", "v" },
+    },
   },
   config = function(_, opts)
     require("legendary").setup(opts)

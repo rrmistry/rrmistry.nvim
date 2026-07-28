@@ -2,6 +2,9 @@
 -- mason-nvim-dap installs the adapter but ships no default setup for it,
 -- so the adapter and launch/attach configurations are wired here.
 -- Python needs none of this: nvim-dap-python (pack.python) self-configures.
+-- VS Code launch.json files (including JSONC) are handled by AstroNvim's
+-- own nvim-dap config — which is why this spec uses `opts` for side
+-- effects instead of `config`: defining `config` would clobber it.
 ---@type LazySpec
 return {
   {
@@ -14,26 +17,9 @@ return {
   {
     "mfussenegger/nvim-dap",
     optional = true, -- merge-fragment on AstroNvim core's dap stack
-    config = function()
+    opts = function()
       local dap = require "dap"
 
-      -- VS Code launch.json files are JSONC; nvim-dap's reader is strict
-      -- JSON. Strip comments (string-safe, via plenary) and trailing commas
-      -- so per-project .vscode/launch.json entries load as-is.
-      require("dap.ext.vscode").json_decode = function(str)
-        str = require("plenary.json").json_strip_comments(str, {})
-        str = str:gsub(",(%s*[%]}])", "%1") -- ponytail: naive on strings containing ",}"
-        return vim.json.decode(str)
-      end
-      dap.adapters["pwa-node"] = {
-        type = "server",
-        host = "localhost",
-        port = "${port}",
-        executable = {
-          command = "js-debug-adapter", -- on PATH via mason
-          args = { "${port}" },
-        },
-      }
       -- Generic "attach to debugpy in a container" for python, registered as
       -- a config provider so nvim-dap-python's own configs are untouched.
       -- Project-specific values belong in .vscode/launch.json (auto-read).
@@ -59,6 +45,15 @@ return {
         }
       end
 
+      dap.adapters["pwa-node"] = {
+        type = "server",
+        host = "localhost",
+        port = "${port}",
+        executable = {
+          command = "js-debug-adapter", -- on PATH via mason
+          args = { "${port}" },
+        },
+      }
       for _, language in ipairs { "typescript", "javascript" } do
         dap.configurations[language] = {
           {

@@ -1,6 +1,8 @@
--- VS Code-style command palette: <Space>P, then type plain English.
--- Curated entries only (no auto-registration) to avoid duplicate cryptic items.
--- Entries without an implementation are "anonymous": they only add a searchable
+-- VS Code-style command palette: Ctrl+P, then type plain English.
+-- Three layers: curated plain-English entries below, a startup harvest of
+-- the whole <Leader> tree, and a per-buffer harvest of local mappings on
+-- palette open (see config + lua/user_legendary_palette.lua). Entries
+-- without an implementation are "anonymous": they only add a searchable
 -- label for an existing binding — nothing is rebound.
 
 -- true while any diffview tab is open (diff windows keep each file's own
@@ -179,8 +181,8 @@ return {
       { "<Leader>gc", description = "Git commit log (repository)" },
       { "<Leader>gC", description = "Git commit log (current file)" },
       { "<Leader>go", description = "Git browse: open current commit on remote" },
-      { "<Leader>gd", "<Cmd>Gitsigns diffthis<CR>", description = "Git diff current file (side-by-side split)" },
-      { "<Leader>gD", function() require("gitsigns").diffthis "~1" end, description = "Git diff current file against previous commit" },
+      { "<Leader>gd", description = "Git diff current file (side-by-side split)" },
+      { "<Leader>gD", description = "Git diff current file against previous commit" },
       { "<Leader>gs", description = "Stage / unstage git change (hunk)", mode = { "n", "v" } },
       { "<Leader>gr", description = "Undo git change (discard hunk)", mode = { "n", "v" } },
       { "<Leader>gS", description = "Stage all changes in file" },
@@ -462,8 +464,10 @@ return {
       },
       {
         function()
+          local cfg = require "sidekick.config"
+          local ok, resolved = pcall(function() return cfg.tools() end) -- public API
           local tools = {}
-          for name in pairs(require("sidekick.config").cli.tools or {}) do
+          for name in pairs(ok and resolved or cfg.cli.tools or {}) do
             table.insert(tools, name)
           end
           table.sort(tools)

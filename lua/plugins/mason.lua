@@ -13,7 +13,6 @@ return {
       ensure_installed = {
         "typos-lsp", -- spelling warnings in code/comments/identifiers, low noise
         "cucumber-language-server", -- LSP for Gherkin *.feature files (no pack exists)
-        "debugpy", -- python debug adapter (pack.python does not ensure it)
         "tree-sitter-cli", -- lets treesitter auto_install compile new parsers
       },
     },

@@ -22,6 +22,15 @@ return {
         ["[g"] = { function() require("gitsigns").nav_hunk("prev", { target = "all" }) end, desc = "Previous Git hunk" },
         ["]G"] = { function() require("gitsigns").nav_hunk("last", { target = "all" }) end, desc = "Last Git hunk" },
         ["[G"] = { function() require("gitsigns").nav_hunk("first", { target = "all" }) end, desc = "First Git hunk" },
+        -- gitsigns split diffs (AstroNvim ships neither binding)
+        ["<Leader>gd"] = {
+          function() require("gitsigns").diffthis() end,
+          desc = "View Git diff",
+        },
+        ["<Leader>gD"] = {
+          function() require("gitsigns").diffthis "~1" end,
+          desc = "View Git diff against previous commit",
+        },
         -- default agent CLI is runtime-switchable (palette: "AI: choose
         -- default CLI provider"); falls back to Claude Code
         ["<Leader>Aa"] = {

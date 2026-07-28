@@ -46,6 +46,53 @@ return {
         ["<Up>"] = { "<C-o>gk", desc = "Move up (visual line)" },
       },
     },
+    autocmds = {
+      -- open the repo README (any case: README.md, ReadMe.md, readme.rst,
+      -- bare README) when starting nvim without a file, e.g. `nvim` or
+      -- `nvim .` — lands in the main window, sidebar untouched
+      auto_open_readme = {
+        {
+          event = "VimEnter",
+          desc = "Open repo README when starting without a file",
+          callback = function()
+            vim.defer_fn(function()
+              for _, b in ipairs(vim.api.nvim_list_bufs()) do
+                local name = vim.api.nvim_buf_get_name(b)
+                if vim.bo[b].buflisted and name ~= "" and vim.fn.isdirectory(name) == 0 then
+                  return -- a real file is already open
+                end
+              end
+              local cwd = vim.fn.getcwd()
+              local best
+              for _, name in ipairs(vim.fn.readdir(cwd) or {}) do
+                local l = name:lower()
+                if l == "readme.md" then
+                  best = name
+                  break
+                elseif not best and (l == "readme" or l:match "^readme%.%w+$") then
+                  best = name
+                end
+              end
+              if not best then return end
+              local target
+              for _, w in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+                local wb = vim.api.nvim_win_get_buf(w)
+                if vim.bo[wb].filetype ~= "neo-tree" and vim.api.nvim_win_get_config(w).relative == "" then
+                  target = w
+                  break
+                end
+              end
+              local function open() vim.cmd.edit(vim.fs.joinpath(cwd, best)) end
+              if target then
+                vim.api.nvim_win_call(target, open)
+              else
+                open()
+              end
+            end, 150)
+          end,
+        },
+      },
+    },
     options = {
       opt = {
         -- terminal window title: project root basename first, then the file

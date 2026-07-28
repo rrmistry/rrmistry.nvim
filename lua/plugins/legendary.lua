@@ -276,6 +276,11 @@ return {
       { "l", description = "Open file / expand folder", filters = { ft = "neo-tree" } },
       { "h", description = "Collapse folder / go to parent", filters = { ft = "neo-tree" } },
       { "?", description = "Show sidebar help (all tree actions)", filters = { ft = "neo-tree" } },
+      { "a", description = "Sidebar: add new file (end with / for a folder)", filters = { ft = "neo-tree" } },
+      { "d", description = "Sidebar: delete file/folder under cursor", filters = { ft = "neo-tree" } },
+      { "r", description = "Sidebar: rename file/folder under cursor", filters = { ft = "neo-tree" } },
+      { "c", description = "Sidebar: copy file/folder under cursor", filters = { ft = "neo-tree" } },
+      { "m", description = "Sidebar: move file/folder under cursor", filters = { ft = "neo-tree" } },
       -- diffview file panel actions (only shown while the git panel is focused)
       { "s", description = "Stage / unstage file under cursor", filters = { ft = "DiffviewFiles" } },
       { "S", description = "Stage all files", filters = { ft = "DiffviewFiles" } },
@@ -399,6 +404,45 @@ return {
           md.toggle_overlay(buf)
         end,
         description = "Toggle inline diff view in this buffer (overlay)",
+      },
+      {
+        function() require("snacks").rename.rename_file() end,
+        description = "Rename / move current file (updates imports via LSP)",
+      },
+      {
+        function()
+          local file = vim.api.nvim_buf_get_name(0)
+          if file == "" or vim.fn.filereadable(file) == 0 then
+            return vim.notify("No file on disk for this buffer", vim.log.levels.WARN)
+          end
+          vim.ui.select({ "No", "Yes" }, {
+            prompt = "Delete " .. vim.fn.fnamemodify(file, ":.") .. "?",
+          }, function(choice)
+            if choice ~= "Yes" then return end
+            vim.fn.delete(file)
+            require("snacks").bufdelete()
+            vim.notify("Deleted " .. vim.fn.fnamemodify(file, ":t"))
+          end)
+        end,
+        description = "Delete current file (asks first)",
+      },
+      {
+        function()
+          local file = vim.api.nvim_buf_get_name(0)
+          if file == "" or vim.fn.filereadable(file) == 0 then
+            return vim.notify("No file on disk for this buffer", vim.log.levels.WARN)
+          end
+          vim.ui.input({ prompt = "Copy to: ", default = file, completion = "file" }, function(dest)
+            if not dest or dest == "" or dest == file then return end
+            if vim.uv.fs_copyfile(file, dest) then
+              vim.cmd.edit(dest)
+              vim.notify("Copied to " .. vim.fn.fnamemodify(dest, ":."))
+            else
+              vim.notify("Copy failed", vim.log.levels.ERROR)
+            end
+          end)
+        end,
+        description = "Copy / duplicate current file (prompts for new path)",
       },
       {
         function() require("snacks").gitbrowse { what = "branch" } end,

@@ -17,12 +17,21 @@ return {
       attach = function(buf_id)
         local path = vim.api.nvim_buf_get_name(buf_id)
         if path == "" or vim.bo[buf_id].buftype ~= "" then return false end
-        local res = vim.system(
+        -- async: process spawns are expensive on Windows (worse under
+        -- corporate AV); never block buffer open on a git roundtrip
+        vim.system(
           { "git", "-C", vim.fs.dirname(path), "show", "HEAD:./" .. vim.fs.basename(path) },
-          { text = true }
-        ):wait()
-        if res.code ~= 0 then return false end
-        require("mini.diff").set_ref_text(buf_id, res.stdout)
+          { text = true },
+          vim.schedule_wrap(function(res)
+            if not vim.api.nvim_buf_is_valid(buf_id) then return end
+            local md = require "mini.diff"
+            if res.code == 0 then
+              pcall(md.set_ref_text, buf_id, res.stdout)
+            else
+              pcall(md.disable, buf_id) -- untracked/new file: no reference
+            end
+          end)
+        )
       end,
     },
     view = {

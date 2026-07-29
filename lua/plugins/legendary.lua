@@ -155,6 +155,12 @@ return {
       { "<Leader>ft", description = "Change color theme" },
       { "<Leader>gg", description = "Open lazygit (pull, push, stash, branch, merge)" },
       { "<Leader>td", description = "Open lazydocker (containers, logs, exec, restart)" },
+      -- REST client (kulala; *.http files like vscode-restclient)
+      { "<Leader>rs", description = "REST: send request under cursor (.http file)" },
+      { "<Leader>ra", description = "REST: send all requests in file" },
+      { "<Leader>rr", description = "REST: replay last request" },
+      { "<Leader>rb", description = "REST: open scratchpad (.http playground)" },
+      { "<Leader>ro", description = "REST: open kulala UI" },
       -- terminal
       { "<F7>", description = "Toggle terminal" },
       { "<Leader>tf", description = "Open terminal (floating)" },

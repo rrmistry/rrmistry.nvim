@@ -31,6 +31,9 @@ return {
   { import = "astrocommunity.pack.bash" },
   -- lazydocker terminal UI (<Space>td): containers, logs, exec, restart
   { import = "astrocommunity.docker.lazydocker" },
+  -- REST client for *.http files (vscode-restclient equivalent): send
+  -- requests, env vars, intellisense via kulala-ls (<Space>r*)
+  { import = "astrocommunity.programming-language-support.kulala-nvim" },
   -- AI: Copilot completions inside blink.cmp, plus sidekick for Copilot
   -- next-edit suggestions and the Claude Code CLI terminal (<Space>A*)
   { import = "astrocommunity.completion.blink-copilot" },

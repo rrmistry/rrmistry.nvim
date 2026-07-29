@@ -8,6 +8,11 @@ return {
     "zbirenbaum/copilot.lua",
     optional = true, -- merge-fragment: applies only via the community import
     opts = {
+      -- free tier: when the monthly completion quota runs out, the server
+      -- pushes an upgrade prompt per request — a notification storm while
+      -- typing. Degrade silently instead (completions just return empty
+      -- until the quota resets).
+      disable_limit_reached_message = true,
       -- never attach to secrets-bearing files: buffer content is never sent
       -- to GitHub for these. Replaces the default should_attach, so the
       -- buflisted/buftype checks are reproduced here.

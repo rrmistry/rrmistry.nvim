@@ -38,6 +38,13 @@ return {
   -- next-edit suggestions and the Claude Code CLI terminal (<Space>A*)
   { import = "astrocommunity.completion.blink-copilot" },
   { import = "astrocommunity.ai.sidekick-nvim" },
+  -- NES draws from the Copilot free-tier quota on every edit; keep it
+  -- opt-in per session (<Space>Ane enables, <Space>Ant toggles)
+  { "folke/sidekick.nvim", optional = true, opts = { nes = { enabled = false } } },
+  -- Windsurf (Codeium) ghost-text inline suggestions — the default AI
+  -- completion provider (generous free tier). Sign in once: :Codeium Auth
+  { import = "astrocommunity.completion.codeium-nvim" },
+  { "Exafunction/codeium.nvim", optional = true, opts = { virtual_text = { enabled = true } } },
   -- editor upgrades (2026-07 survey picks)
   -- conform: single formatting pipeline (community spec disables astrolsp/
   -- none-ls formatting; formatters are declared in lua/plugins/mason.lua)

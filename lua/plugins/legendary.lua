@@ -370,6 +370,8 @@ return {
       { ":Mason", description = "Manage language tools (LSP, formatters, linters)" },
       { ":GrugFar", description = "Find & replace across project" },
       { ":checkhealth", description = "Diagnose Neovim health" },
+      { ":Codeium Auth", description = "Windsurf: sign in (one-time, browser)" },
+      { ":Codeium Chat", description = "Windsurf: open chat in browser" },
       { ":Copilot auth", description = "Copilot: sign in with GitHub (one-time)" },
       { ":Copilot status", description = "Copilot: connection status" },
       { ":Copilot disable", description = "Copilot: pause completions" },
@@ -467,6 +469,13 @@ return {
       {
         function() require("snacks").picker() end,
         description = "Open any picker (files, symbols, grep, undo, marks, ...)",
+      },
+      {
+        function()
+          vim.g.copilot_completions = not vim.g.copilot_completions
+          vim.notify("Copilot completions " .. (vim.g.copilot_completions and "ENABLED" or "disabled") .. " (this session)")
+        end,
+        description = "Copilot: toggle completions for this session (default off)",
       },
       {
         function()

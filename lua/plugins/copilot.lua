@@ -41,15 +41,17 @@ return {
     },
   },
   {
-    -- no AI completions while reviewing diffs: hide the copilot source in
-    -- any window that is in diff mode (LSP/path/buffer completion stays)
+    -- Copilot stays installed but OFF by default (Windsurf is the primary
+    -- inline provider; Copilot free-tier quota is precious). Enable per
+    -- session via the palette ("Copilot: toggle completions"), and never
+    -- in diff-mode windows.
     "saghen/blink.cmp",
     optional = true,
     opts = {
       sources = {
         providers = {
           copilot = {
-            enabled = function() return not vim.wo.diff end,
+            enabled = function() return vim.g.copilot_completions == true and not vim.wo.diff end,
           },
         },
       },

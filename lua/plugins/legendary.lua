@@ -151,6 +151,12 @@ return {
       { "d0", description = "Delete to start of line" },
       { "<Leader>uZ", description = "Toggle zen mode" },
       { "<Leader>us", description = "Toggle spell checking (dictionary-based)" },
+      -- native spell corrections (when <Leader>us spell mode is on)
+      { "z=", description = "Spelling: list corrections for word under cursor" },
+      { "1z=", description = "Spelling: accept first correction" },
+      { "zg", description = "Spelling: add word under cursor to dictionary" },
+      { "]s", description = "Spelling: next misspelled word" },
+      { "[s", description = "Spelling: previous misspelled word" },
       { "<Leader>uw", description = "Toggle soft wrap (this window only)" },
       { "<Leader>ft", description = "Change color theme" },
       { "<Leader>gg", description = "Open lazygit (pull, push, stash, branch, merge)" },
@@ -469,6 +475,12 @@ return {
       {
         function() require("snacks").picker() end,
         description = "Open any picker (files, symbols, grep, undo, marks, ...)",
+      },
+      {
+        function()
+          vim.lsp.buf.code_action { context = { only = { "quickfix" } }, apply = true }
+        end,
+        description = "Spelling/typo: apply suggested fix under cursor (code action)",
       },
       {
         function()

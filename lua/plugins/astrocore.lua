@@ -4,6 +4,16 @@ return {
   "AstroNvim/astrocore",
   ---@type AstroCoreOpts
   opts = {
+    -- show the FULL diagnostic (e.g. typos-lsp spelling suggestions) as
+    -- wrapped virtual lines under the cursor's line: eol virtual text
+    -- cannot wrap and is unreachable when soft wrap is on (cursor can
+    -- never enter virtual text). <Space>uV toggles.
+    features = {
+      diagnostics = { virtual_text = true, virtual_lines = true },
+    },
+    diagnostics = {
+      virtual_lines = { current_line = true },
+    },
     -- Tiltfiles are Starlark; gets treesitter highlighting via auto_install
     filetypes = {
       filename = { Tiltfile = "starlark" },

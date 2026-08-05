@@ -161,6 +161,15 @@ return {
       { "<Leader>ft", description = "Change color theme" },
       { "<Leader>gg", description = "Open lazygit (pull, push, stash, branch, merge)" },
       { "<Leader>td", description = "Open lazydocker (containers, logs, exec, restart)" },
+      -- CSV tools (csv.vim; shown while in a csv buffer)
+      { ":%ArrangeColumn", description = "CSV: align columns into a table view", filters = { ft = "csv" } },
+      { ":%UnArrangeColumn", description = "CSV: undo column alignment", filters = { ft = "csv" } },
+      { ":CSVTabularize", description = "CSV: render as bordered table (read-only view)", filters = { ft = "csv" } },
+      { ":HiColumn", description = "CSV: highlight current column", filters = { ft = "csv" } },
+      { ":HiColumn!", description = "CSV: remove column highlight", filters = { ft = "csv" } },
+      { ":WhatColumn", description = "CSV: which column is the cursor in", filters = { ft = "csv" } },
+      { ":Sort", description = "CSV: sort rows by current column", filters = { ft = "csv" } },
+      { ":Header", description = "CSV: freeze header row at top", filters = { ft = "csv" } },
       -- REST client (kulala; *.http files like vscode-restclient)
       { "<Leader>rs", description = "REST: send request under cursor (.http file)" },
       { "<Leader>ra", description = "REST: send all requests in file" },

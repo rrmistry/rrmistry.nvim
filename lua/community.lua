@@ -34,6 +34,13 @@ return {
   -- REST client for *.http files (vscode-restclient equivalent): send
   -- requests, env vars, intellisense via kulala-ls (<Space>r*)
   { import = "astrocommunity.programming-language-support.kulala-nvim" },
+  -- CSV visualization: column alignment/highlighting, header freeze,
+  -- column-aware sort (commands in the palette while in a csv buffer)
+  { import = "astrocommunity.programming-language-support.csv-vim" },
+  -- the community spec's ft-lazy load arrives too late: Neovim's runtime
+  -- now ships its own ftplugin/csv.vim whose b:did_ftplugin guard blocks
+  -- csv.vim's. Eager load puts csv.vim's ftplugin first in rtp order.
+  { "chrisbra/csv.vim", optional = true, lazy = false },
   -- AI: Copilot completions inside blink.cmp, plus sidekick for Copilot
   -- next-edit suggestions and the Claude Code CLI terminal (<Space>A*)
   { import = "astrocommunity.completion.blink-copilot" },

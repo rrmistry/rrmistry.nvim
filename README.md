@@ -9,6 +9,32 @@ git clone https://github.com/rrmistry/rrmistry.nvim "${XDG_CONFIG_HOME:-$HOME/.c
 nvim
 ```
 
+## Dev containers
+
+Mount the config plus a persistent named volume for Neovim's data and the full IDE works pre-configured inside a dev container — no `git clone` in the container, and rebuilds reuse everything. Validated against `mcr.microsoft.com/devcontainers/python:dev-3-bookworm` (arm64): all 75 plugins auto-install on first start (~2 min), mason installs the LSPs/formatters, treesitter compiles parsers, and a rebuilt container starts instantly with 0 missing plugins.
+
+```jsonc
+{
+  "image": "mcr.microsoft.com/devcontainers/python:dev-3-bookworm",
+  "mounts": [
+    "source=${localEnv:HOME}/.config/nvim,target=/home/vscode/.config/nvim,type=bind",
+    "source=nvim-devcontainer-data,target=/home/vscode/.local/share/nvim,type=volume"
+  ],
+  // chown: docker creates the volume mountpoint's parent dirs root-owned,
+  // which would block nvim from creating ~/.local/state.
+  // Then install nvim from the release tarball (bump version to taste).
+  "onCreateCommand": "sudo chown -R vscode: /home/vscode/.local && curl -fsSL https://github.com/neovim/neovim/releases/download/v0.11.3/nvim-linux-$(dpkg --print-architecture | sed s/amd64/x86_64/).tar.gz | sudo tar xz -C /opt && sudo ln -sf /opt/nvim-linux-*/bin/nvim /usr/local/bin/nvim"
+}
+```
+
+Why a named volume for `~/.local/share/nvim` instead of binding the host's: that directory holds mason binaries and compiled treesitter parsers built for the **host** OS/arch — macOS binaries can't run in a Linux container. The named volume lets containers install their own Linux toolchain once and share it across rebuilds and projects.
+
+Notes (validated on the python bookworm image):
+
+- First start installs the newest plugin versions each pin allows and **writes them to `lazy-lock.json`** — through the bind mount, so the repo shows a modified lock file afterward. `git restore lazy-lock.json` to keep the current pins, or commit the bump deliberately.
+- `tree-sitter-cli` is pinned to v0.25.10 in this config (`lua/plugins/mason.lua`) — 0.26+ release binaries need glibc 2.39, bookworm ships 2.36. Bump the pin when the base images move past bookworm.
+- The python image ships no Node.js, so the one npm-based server (`vtsls`, TypeScript) skips its install; everything else lands. Add node to the container (e.g. the devcontainers `node` feature) if you want TS tooling there.
+
 ## Extras on top of the template
 
 | Keys | What |

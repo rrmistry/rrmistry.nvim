@@ -13,7 +13,11 @@ return {
       ensure_installed = {
         "typos-lsp", -- spelling warnings in code/comments/identifiers, low noise
         "cucumber-language-server", -- LSP for Gherkin *.feature files (no pack exists)
-        "tree-sitter-cli", -- lets treesitter auto_install compile new parsers
+        -- lets treesitter auto_install compile new parsers. Pinned: newer
+        -- builds (0.26+) need glibc 2.39, which Debian bookworm dev
+        -- containers don't have; 0.25.10 is the newest that runs there.
+        -- Bump when the devcontainer base images move past bookworm.
+        { "tree-sitter-cli", version = "v0.25.10" },
       },
     },
   },

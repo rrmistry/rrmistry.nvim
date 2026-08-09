@@ -396,6 +396,16 @@ return {
       { ":Copilot status", description = "Copilot: connection status" },
       { ":Copilot disable", description = "Copilot: pause completions" },
       { ":Copilot enable", description = "Copilot: resume completions" },
+      -- Claude Code IDE bridge (claudecode.nvim): a `claude` CLI in any
+      -- terminal attaches to this nvim via /ide, then sees files/selections
+      -- and proposes edits as native diffs (accept :w, reject :q)
+      { ":ClaudeCodeStatus", description = "AI: Claude Code IDE connection status" },
+      { ":ClaudeCodeAdd %", description = "AI: add current file to Claude Code context" },
+      { ":ClaudeCodeSend", description = "AI: send visual selection to Claude Code" },
+      { ":ClaudeCodeTreeAdd", description = "AI: add selected file to Claude Code context", filters = { ft = "neo-tree" } },
+      { ":ClaudeCodeDiffAccept", description = "AI: accept Claude Code proposed diff" },
+      { ":ClaudeCodeDiffDeny", description = "AI: reject Claude Code proposed diff" },
+      { ":ClaudeCodeCloseAllDiffs", description = "AI: close pending Claude Code diffs" },
     },
     funcs = {
       -- real function, not fed keystrokes: works from inside the neo-tree

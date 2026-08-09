@@ -47,14 +47,26 @@ return {
     -- in diff-mode windows.
     "saghen/blink.cmp",
     optional = true,
-    opts = {
-      sources = {
-        providers = {
-          copilot = {
-            enabled = function() return vim.g.copilot_completions == true and not vim.wo.diff end,
-          },
-        },
-      },
-    },
+    opts = function(_, opts)
+      opts.sources = opts.sources or {}
+      opts.sources.providers = opts.sources.providers or {}
+      opts.sources.providers.copilot = vim.tbl_extend("force", opts.sources.providers.copilot or {}, {
+        enabled = function() return vim.g.copilot_completions == true and not vim.wo.diff end,
+      })
+      -- Tab accepts a visible Windsurf ghost suggestion first (blink's
+      -- buffer-local Tab shadows codeium's global map, so the accept has
+      -- to live at the head of blink's own chain), then falls through to
+      -- blink's normal snippet/menu/fallback behavior.
+      local tab = opts.keymap and opts.keymap["<Tab>"]
+      if type(tab) == "table" then
+        table.insert(tab, 1, function()
+          local ok, vt = pcall(require, "codeium.virtual_text")
+          if ok and vt.get_current_completion_item() then
+            vim.schedule(vt.accept)
+            return true
+          end
+        end)
+      end
+    end,
   },
 }

@@ -51,7 +51,23 @@ return {
   -- Windsurf (Codeium) ghost-text inline suggestions — the default AI
   -- completion provider (generous free tier). Sign in once: :Codeium Auth
   { import = "astrocommunity.completion.codeium-nvim" },
-  { "Exafunction/codeium.nvim", optional = true, opts = { virtual_text = { enabled = true } } },
+  -- Windsurf accept keys: Tab is owned by blink (see the arbitration in
+  -- plugins/copilot.lua), so codeium's own Tab map is off; partial accepts
+  -- match VS Code muscle memory (insert-mode Ctrl+arrows are free).
+  {
+    "Exafunction/codeium.nvim",
+    optional = true,
+    opts = {
+      virtual_text = {
+        enabled = true,
+        key_bindings = {
+          accept = false, -- blink's Tab chain accepts instead
+          accept_word = "<C-Right>",
+          accept_line = "<C-Down>",
+        },
+      },
+    },
+  },
   -- editor upgrades (2026-07 survey picks)
   -- conform: single formatting pipeline (community spec disables astrolsp/
   -- none-ls formatting; formatters are declared in lua/plugins/mason.lua)

@@ -183,6 +183,11 @@ return {
       { "<Leader>Ad", description = "AI: detach CLI session (keeps running in background)" },
       { "<C-.>", description = "AI: quick toggle CLI terminal (also while typing)" },
       { "<Tab>", description = "AI: go to / apply next edit suggestion (when shown)" },
+      { "<Tab>", description = "AI: accept inline suggestion (Windsurf ghost text)", mode = { "i" } },
+      { "<C-Right>", description = "AI: accept next word of suggestion", mode = { "i" } },
+      { "<C-Down>", description = "AI: accept next line of suggestion", mode = { "i" } },
+      { "<M-]>", description = "AI: next inline suggestion", mode = { "i" } },
+      { "<M-[>", description = "AI: previous inline suggestion", mode = { "i" } },
       -- meta-discovery: the long tail beyond this curated palette
       { "<Leader>fC", description = "Run any command (fuzzy over ALL commands, even undescribed)" },
       { "<Leader>fk", description = "Search every keybinding (all keymaps)" },

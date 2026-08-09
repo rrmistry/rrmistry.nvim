@@ -36,6 +36,26 @@ return {
       formatters_by_ft = {
         -- ghokin is not in mason: go install github.com/antham/ghokin/v3/cmd/ghokin@latest
         cucumber = { "ghokin" },
+        -- per-project python toolchain: a repo that configures ruff formats
+        -- with ruff (same fix→organize→format order as ruff pre-commit hooks,
+        -- so editor saves and commits never ping-pong); everything else keeps
+        -- the packs' isort+black chain. Ruff wins even when a stale
+        -- [tool.black] section lingers next to [tool.ruff].
+        python = function(bufnr)
+          local ruff = { "ruff_fix", "ruff_organize_imports", "ruff_format" }
+          if vim.fs.root(bufnr, { "ruff.toml", ".ruff.toml" }) then return ruff end
+          local dir = vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr))
+          local pyproject = vim.fs.find("pyproject.toml", { upward = true, path = dir })[1]
+          if pyproject then
+            local f = io.open(pyproject)
+            if f then
+              local body = f:read "*a"
+              f:close()
+              if body:find("[tool.ruff", 1, true) then return ruff end
+            end
+          end
+          return { "isort", "black" }
+        end,
       },
     },
   },

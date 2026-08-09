@@ -23,6 +23,13 @@ return {
   { import = "astrocommunity.pack.python.basedpyright" },
   { import = "astrocommunity.pack.python.black" },
   { import = "astrocommunity.pack.python.isort" },
+  -- ruff LSP: in-editor lint diagnostics + autofix actions, driven by each
+  -- project's own pyproject/ruff.toml (near-silent pyflakes defaults where
+  -- none exists; hover stays with basedpyright). This subpack also sets the
+  -- conform chain to ruff — the per-project arbitration lives in
+  -- plugins/mason.lua: ruff-configured repos format with ruff, all others
+  -- keep isort+black.
+  { import = "astrocommunity.pack.python.ruff" },
   { import = "astrocommunity.pack.typescript" }, -- vtsls (VS Code's TS server), prettier
   { import = "astrocommunity.pack.astro" }, -- Astro.js: astro-language-server + parser
   { import = "astrocommunity.pack.lua" }, -- lua_ls, stylua, lazydev (this config!)

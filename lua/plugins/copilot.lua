@@ -56,13 +56,18 @@ return {
       -- Tab accepts a visible Windsurf ghost suggestion first (blink's
       -- buffer-local Tab shadows codeium's global map, so the accept has
       -- to live at the head of blink's own chain), then falls through to
-      -- blink's normal snippet/menu/fallback behavior.
+      -- blink's normal snippet/menu/fallback behavior. accept() is built
+      -- for expr mappings: it returns a keystroke string and inserts
+      -- nothing itself, so feed its return through feedkeys.
       local tab = opts.keymap and opts.keymap["<Tab>"]
       if type(tab) == "table" then
         table.insert(tab, 1, function()
           local ok, vt = pcall(require, "codeium.virtual_text")
           if ok and vt.get_current_completion_item() then
-            vim.schedule(vt.accept)
+            local keys = vt.accept()
+            if type(keys) == "string" and keys ~= "" then
+              vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, true, true), "n", false)
+            end
             return true
           end
         end)

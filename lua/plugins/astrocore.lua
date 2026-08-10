@@ -22,8 +22,8 @@ return {
     -- default vim treats shifted wheel as page-scroll instead
     mappings = {
       n = {
-        ["<S-ScrollWheelUp>"] = { "<ScrollWheelLeft>", desc = "Scroll left" },
-        ["<S-ScrollWheelDown>"] = { "<ScrollWheelRight>", desc = "Scroll right" },
+        ["<S-ScrollWheelUp>"] = { "<ScrollWheelRight>", desc = "Scroll right" },
+        ["<S-ScrollWheelDown>"] = { "<ScrollWheelLeft>", desc = "Scroll left" },
         ["<Down>"] = { "gj", desc = "Move down (visual line)" },
         ["<Up>"] = { "gk", desc = "Move up (visual line)" },
         -- navigate ALL hunks differing from the last commit, staged or not
@@ -49,8 +49,8 @@ return {
         },
       },
       v = {
-        ["<S-ScrollWheelUp>"] = { "<ScrollWheelLeft>", desc = "Scroll left" },
-        ["<S-ScrollWheelDown>"] = { "<ScrollWheelRight>", desc = "Scroll right" },
+        ["<S-ScrollWheelUp>"] = { "<ScrollWheelRight>", desc = "Scroll right" },
+        ["<S-ScrollWheelDown>"] = { "<ScrollWheelLeft>", desc = "Scroll left" },
       },
       -- arrows move by visual line through soft-wrapped text (VS Code style);
       -- j/k keep vim's physical-line semantics
@@ -59,8 +59,8 @@ return {
         ["<Up>"] = { "gk", desc = "Move up (visual line)" },
       },
       i = {
-        ["<S-ScrollWheelUp>"] = { "<ScrollWheelLeft>", desc = "Scroll left" },
-        ["<S-ScrollWheelDown>"] = { "<ScrollWheelRight>", desc = "Scroll right" },
+        ["<S-ScrollWheelUp>"] = { "<ScrollWheelRight>", desc = "Scroll right" },
+        ["<S-ScrollWheelDown>"] = { "<ScrollWheelLeft>", desc = "Scroll left" },
         ["<Down>"] = { "<C-o>gj", desc = "Move down (visual line)" },
         ["<Up>"] = { "<C-o>gk", desc = "Move up (visual line)" },
       },

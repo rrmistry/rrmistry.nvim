@@ -214,6 +214,13 @@ return {
       { "<Leader>xt", description = "Problems panel: TODOs / FIXMEs" },
       -- sticky scroll
       { "<Leader>uT", description = "Toggle sticky scroll (pinned def/class context)" },
+      -- horizontal scroll without a mouse (built-ins; need :set nowrap —
+      -- Shift+mouse-wheel also works, but not from Termux, which strips
+      -- keyboard modifiers from mouse events)
+      { "zL", description = "Scroll right half a screen (long lines, nowrap)" },
+      { "zH", description = "Scroll left half a screen (long lines, nowrap)" },
+      { "zl", description = "Scroll right one column" },
+      { "zh", description = "Scroll left one column" },
       -- test runner (neotest)
       { "<Leader>Tt", description = "Run test under cursor" },
       { "<Leader>Tf", description = "Run all tests in file" },

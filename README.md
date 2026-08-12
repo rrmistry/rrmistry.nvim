@@ -9,6 +9,24 @@ git clone https://github.com/rrmistry/rrmistry.nvim "${XDG_CONFIG_HOME:-$HOME/.c
 nvim
 ```
 
+## Dependencies
+
+Everything inside the editor (LSPs, formatters, debuggers, `tree-sitter-cli`) is auto-installed by mason on first launch — only the tools below must already exist on the machine.
+
+| Dependency | Needed for | Linux | macOS | Windows |
+| --- | --- | --- | --- | --- |
+| Neovim ≥ 0.11 | the editor (apt/yum versions are usually too old) | [release tarball](https://github.com/neovim/neovim/releases) or `snap install nvim --classic` | `brew install neovim` | `winget install Neovim.Neovim` |
+| `git` | cloning this config, lazy.nvim plugin installs | `apt install git` | `xcode-select --install` | `winget install Git.Git` |
+| C compiler (`cc`) | compiling treesitter parsers (via `tree-sitter-cli`) | `apt install build-essential` | `xcode-select --install` | `scoop install gcc` |
+| Node.js ≥ 18 | npm-based LSPs (`vtsls`), Copilot | `apt install nodejs npm` or nvm | `brew install node` | `winget install OpenJS.NodeJS.LTS` |
+| `ripgrep` | live grep, search & replace (grug-far) | `apt install ripgrep` | `brew install ripgrep` | `winget install BurntSushi.ripgrep.MSVC` |
+| `curl`, `tar`, `unzip`, `gzip` | mason package downloads | usually preinstalled | preinstalled | ships with Windows 10+ |
+| Nerd Font *(optional)* | icons in statusline/pickers — install in the **terminal you use**, not the remote host | [nerdfonts.com](https://www.nerdfonts.com) | `brew install --cask font-jetbrains-mono-nerd-font` | `scoop bucket add nerd-fonts` |
+| `lazygit` *(optional)* | `<Space>gg` git UI | [releases](https://github.com/jesseduffield/lazygit/releases) | `brew install lazygit` | `winget install JesseDuffield.lazygit` |
+| `lazydocker` *(optional)* | container UI | [releases](https://github.com/jesseduffield/lazydocker/releases) | `brew install lazydocker` | `winget install JesseDuffield.lazydocker` |
+
+On any platform with nix/devbox, one line covers the non-optional CLI tools: `devbox global add neovim gcc nodejs ripgrep` (add `lazygit lazydocker` to taste).
+
 ## Dev containers
 
 Mount the config plus a persistent named volume for Neovim's data and the full IDE works pre-configured inside a dev container — no `git clone` in the container, and rebuilds reuse everything. Validated against `mcr.microsoft.com/devcontainers/python:dev-3-bookworm` (arm64): all 75 plugins auto-install on first start (~2 min), mason installs the LSPs/formatters, treesitter compiles parsers, and a rebuilt container starts instantly with 0 missing plugins.

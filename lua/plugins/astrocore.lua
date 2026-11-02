@@ -22,6 +22,11 @@ return {
     -- default vim treats shifted wheel as page-scroll instead
     mappings = {
       n = {
+        -- VS Code Ctrl+arrows: jump by words. Overrides AstroNvim's
+        -- horizontal-resize defaults on these two keys (vertical resize
+        -- keeps <C-Up>/<C-Down>; horizontal resize lives in the palette).
+        ["<C-Right>"] = { "w", desc = "Jump to next word" },
+        ["<C-Left>"] = { "b", desc = "Jump to previous word" },
         ["<S-ScrollWheelUp>"] = { "<ScrollWheelRight>", desc = "Scroll right" },
         ["<S-ScrollWheelDown>"] = { "<ScrollWheelLeft>", desc = "Scroll left" },
         ["<Down>"] = { "gj", desc = "Move down (visual line)" },
@@ -63,6 +68,19 @@ return {
         ["<S-ScrollWheelDown>"] = { "<ScrollWheelLeft>", desc = "Scroll left" },
         ["<Down>"] = { "<C-o>gj", desc = "Move down (visual line)" },
         ["<Up>"] = { "<C-o>gk", desc = "Move up (visual line)" },
+        -- VS Code Ctrl+arrows in insert mode, arbitrated with Windsurf
+        -- ghost text: accept / un-accept one suggestion word, else navigate
+        -- by words. Snapshot mechanics live in lua/user_ctrl_nav.lua.
+        ["<C-Right>"] = {
+          function() return require("user_ctrl_nav").word_right() end,
+          expr = true,
+          desc = "Next word / accept next word of AI suggestion",
+        },
+        ["<C-Left>"] = {
+          function() return require("user_ctrl_nav").word_left() end,
+          expr = true,
+          desc = "Previous word / un-accept last AI word",
+        },
       },
     },
     autocmds = {

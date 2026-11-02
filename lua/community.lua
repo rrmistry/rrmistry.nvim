@@ -69,7 +69,9 @@ return {
         enabled = true,
         key_bindings = {
           accept = false, -- blink's Tab chain accepts instead
-          accept_word = "<C-Right>",
+          -- C-Right is owned by the word-nav / word-accept arbiter in
+          -- plugins/astrocore.lua (VS Code-style Ctrl+arrows)
+          accept_word = false,
           accept_line = "<C-Down>",
         },
       },
